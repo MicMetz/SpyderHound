@@ -4,6 +4,7 @@ import platform
 import re
 import sys
 
+
 # from globals import IDENTIFIER
 
 
@@ -21,7 +22,6 @@ def regex_url(url):
 
 
 def get_file_size(file_path):
-
     return os.path.getsize(file_path)
 
 
@@ -40,12 +40,10 @@ def resource_path(relative=''):
 
 
 def get_file_path():
-
     return "not implemented yet"
 
 
 def create_archive_directory():
-
     return "not implemented yet"
 
 

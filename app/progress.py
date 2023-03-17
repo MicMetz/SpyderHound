@@ -88,7 +88,7 @@ def disabled(qobj, state=True, enable=True, except_objs=None):
 
 class ProgressWindow(QProgressDialog):
     def __init__(self, parent=None, window_title=None, label_text=None, min_value=0, max_value=0):
-        super().__init__(label_text, None, min_value, max_value, parent)
+        super().__init__(label_text, "", min_value, max_value, parent)
         pbar = QProgressBar(self)
         pbar.setRange(min_value, max_value)
         pbar.setTextVisible(not (min_value == max_value == 0))
