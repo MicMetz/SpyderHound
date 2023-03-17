@@ -13,42 +13,39 @@ class Spyder:
         - Mutated Spider Based on the Python General Web Spider by Bucky Roberts <https://thenewboston.com/>
     """
 
-    # Class variables
-    _crawler_type = 'General'
-    _project_name = ''
-    _base_url = ''
-    _domain_name = ''
-    _queue_file = ''
-    _crawled_file = ''
-    _queue = set()
-    _crawled = set()
-
 
     def __init__(self, project_name, base_url, domain_name):
-        Spyder._project_name = project_name
-        Spyder._base_url = base_url
-        Spyder._domain_name = domain_name
-        Spyder._queue_file = Spyder._project_name + '/_queue.txt'
-        Spyder._crawled_file = Spyder._project_name + '/_crawled.txt'
-        self.boot()
-        self.crawl_page('First spider', Spyder._base_url)
+        self._project_name = project_name
+        self._base_url = base_url
+        self._domain_name = domain_name
+        self._queue_file = self._project_name + '/_queue.txt'
+        self._crawled_file = self._project_name + '/_crawled.txt'
+        self._queue = ""
+        self._crawled = ""
+        self._crawler_type = 'General'
+        self._domain_name = ''
+        self._queue_file = ''
+        self._crawled_file = ''
+        self._queue = set()
+        self._crawled = set()
+        self.crawl_page('First spider', self._base_url)
 
 
     def boot(self):
-        create_project_dir(Spyder._project_name)
-        create_data_files(Spyder._project_name, Spyder._base_url)
-        Spyder._queue = file_to_set(Spyder._queue_file)
-        Spyder._crawled = file_to_set(Spyder._crawled_file)
+        create_project_dir(self._project_name)
+        create_data_files(self._project_name, self._base_url)
+        self._queue = file_to_set(self._queue_file)
+        self._crawled = file_to_set(self._crawled_file)
 
 
     def crawl_page(self, thread_name, page_url):
-        if page_url not in Spyder._crawled:
+        if page_url not in self._crawled:
             print(thread_name + ' now crawling ' + page_url)
-            print('Queue ' + str(len(Spyder._queue)) + ' | Crawled  ' + str(len(Spyder._crawled)))
-            Spyder.add_links_to_queue(Spyder.gather_links(page_url))
-            Spyder._queue.remove(page_url)
-            Spyder._crawled.add(page_url)
-            Spyder.update_files()
+            print('Queue ' + str(len(self._queue)) + ' | Crawled  ' + str(len(self._crawled)))
+            self.add_links_to_queue(self.gather_links(page_url))
+            self._queue.remove(page_url)
+            self._crawled.add(page_url)
+            self.update_files()
 
 
     def gather_links(self, page_url):
@@ -58,7 +55,7 @@ class Spyder:
             if 'text/html' in response.getheader('Content-Type'):
                 html_bytes = response.read()
                 html_string = html_bytes.decode("utf-8")
-            finder = LinkParser(Spyder._base_url, page_url)
+            finder = LinkParser(self._base_url, page_url)
             finder.feed(html_string)
         except Exception as e:
             print(str(e))
@@ -67,15 +64,15 @@ class Spyder:
 
     def add_links_to_queue(self, links):
         for url in links:
-            if (url in Spyder._queue) or (url in Spyder._crawled):
+            if (url in self._queue) or (url in self._crawled):
                 continue
-            if Spyder._domain_name != get_domain_name(url):
+            if self._domain_name != get_domain_name(url):
                 continue
-            Spyder._queue.add(url)
+        self._queue.add(url)
 
     def update_files(self):
-        set_to_file(Spyder._queue, Spyder._queue_file)
-        set_to_file(Spyder._crawled, Spyder._crawled_file)
+        set_to_file(self._queue, self._queue_file)
+        set_to_file(self._crawled, self._crawled_file)
 
     @property
     def crawled(self):
@@ -117,7 +114,7 @@ class MultiThreadedSpyder(Spyder):
         super().__init__(project_name, base_url, domain_name)
         Spyder(project_name, base_url, domain_name)
         number_of_threads = 8
-        _queue = file_to_set(Spyder._queue_file)
+        _queue = file_to_set(self._queue_file)
         if len(_queue) > 0:
             print(str(len(_queue)) + ' links in the _queue')
             for i in range(number_of_threads):
@@ -127,19 +124,19 @@ class MultiThreadedSpyder(Spyder):
         self.crawl()
 
     def crawl(self):
-        queued_links = file_to_set(Spyder._queue_file)
+        queued_links = file_to_set(self._queue_file)
         if len(queued_links) > 0:
             print(str(len(queued_links)) + ' links in the _queue')
             self.update_files()
 
     def work(self):
         while True:
-            url: str = Spyder._queue.pop()
-            Spyder.crawl_page(threading.current_thread().name, url)
+            url: str = self._queue.pop()
+            self.crawl_page(threading.current_thread().name, url)
 
     def update_files(self):
-        set_to_file(Spyder._queue, Spyder._queue_file)
-        set_to_file(Spyder._crawled, Spyder._crawled_file)
+        set_to_file(self._queue, self._queue_file)
+        set_to_file(self._crawled, self._crawled_file)
 
 
 
@@ -148,23 +145,23 @@ class ChanSpyder(Spyder):
     def __init__(self, project_name, base_url, domain_name):
         super().__init__(project_name, base_url, domain_name)
         Spyder(project_name, base_url, domain_name)
-        Spyder._crawler_type = 'Chan'
+        self._crawler_type = 'Chan'
         self.crawl()
 
     def crawl(self):
-        queued_links = file_to_set(Spyder._queue_file)
+        queued_links = file_to_set(self._queue_file)
         if len(queued_links) > 0:
             print(str(len(queued_links)) + ' links in the _queue')
             self.update_files()
 
     def work(self):
         while True:
-            url = Spyder._queue.pop()
-            Spyder.crawl_page(threading.current_thread().name, url)
+            url = self._queue.pop()
+            self.crawl_page(threading.current_thread().name, url)
 
     def update_files(self):
-        set_to_file(Spyder._queue, Spyder._queue_file)
-        set_to_file(Spyder._crawled, Spyder._crawled_file)
+        set_to_file(self._queue, self._queue_file)
+        set_to_file(self._crawled, self._crawled_file)
 
 
 
@@ -173,20 +170,20 @@ class RedditSpyder(Spyder):
     def __init__(self, project_name, base_url, domain_name):
         super().__init__(project_name, base_url, domain_name)
         Spyder(project_name, base_url, domain_name)
-        Spyder._crawler_type = 'Reddit'
+        self._crawler_type = 'Reddit'
         self.crawl()
 
     def crawl(self):
-        queued_links = file_to_set(Spyder._queue_file)
+        queued_links = file_to_set(self._queue_file)
         if len(queued_links) > 0:
             print(str(len(queued_links)) + ' links in the _queue')
             self.update_files()
 
     def work(self):
         while True:
-            url = Spyder._queue.pop()
-            Spyder.crawl_page(threading.current_thread().name, url)
+            url = self._queue.pop()
+            self.crawl_page(threading.current_thread().name, url)
 
     def update_files(self):
-        set_to_file(Spyder._queue, Spyder._queue_file)
-        set_to_file(Spyder._crawled, Spyder._crawled_file)
+        set_to_file(self._queue, self._queue_file)
+        set_to_file(self._crawled, self._crawled_file)
