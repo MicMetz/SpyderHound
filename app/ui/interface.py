@@ -22,22 +22,24 @@ class Interface:
         self.__root = root
         self.__app = app
         self.__title = tk.StringVar(root_frame, "")
-        self.__colormap = tk.StringVar(root_frame, "viridis")
-        self.__colormap_accents = tk.StringVar(root_frame, "plasma")
+        self.__spydermap = tk.StringVar(root_frame, "viridis")
+        self.__spydermap_accents = tk.StringVar(root_frame, "plasma")
 
         self.__title_font_string = tk.StringVar(root_frame, "Sonos 20")
         self.__title_font_family = "Sonos"
         self.__title_font_size = 20
+        self.__title_font_color = "white"
 
         self.__data_font_string = tk.StringVar(root_frame, "Terminal 10")
         self.__data_font_family = "Terminal"
         self.__data_font_size = 10
+        self.__data_font_color = "white"
 
         self.__app.table_properties = {
             "title": self.__title.get(),
             "title_font_family": self.__title_font_family,
             "title_font_size": self.__title_font_size,
-            "colormap": self.__colormap.get(),
+            "spydermap": self.__spydermap.get(),
         }
 
         __title_label = customtkinter.CTkLabel(master=root_frame, textvariable=self.__title )
@@ -48,13 +50,11 @@ class Interface:
         __title_entry_font = tk.font.Font(family=self.__title_font_family, size=self.__title_font_size)
 
 
-        __colormap_label = customtkinter.CTkLabel(master=root_frame, text="Colormap")
-        __colormap_label.grid(row=2, column=0, sticky=(tk.W, tk.E))
-        __colormaps = ["viridis", "plasma", "inferno", "magma", "cividis", "Greys", "Purples", "Blues", "Greens", "Oranges", "Reds", "YlOrBr", "YlOrRd", "OrRd", "PuRd", "RdPu", "BuPu", "GnBu", "PuBu", "YlGnBu", "PuBuGn", "BuGn", "YlGn"]
-
-        __colormap_entry = customtkinter.CTkComboBox(master=root_frame,  values=__colormaps)
-        __colormap_entry.grid(row=2, column=1, sticky=(tk.W, tk.E))
-        __colormap_entry.configure(state="readonly", text_color="black")
+        __spydermap_label = customtkinter.CTkLabel(master=root_frame, text="Spyders")
+        __spyders = ["4Chan Crawler", "Reddit Crawler", "Twitter Crawler", "Mastodon Crawler", "Tiktok Crawler", "Targeted Crawler", "Custom Crawler"]
+        __spydermap_entry = customtkinter.CTkComboBox(master=root_frame,  values=__spyders)
+        __spydermap_entry.grid(row=2, column=1, sticky=(tk.W, tk.E))
+        __spydermap_entry.configure(state="readonly", text_color="white")
 
 
     def __update_data(self):
@@ -62,7 +62,7 @@ class Interface:
             "title": self.__title.get(),
             "title_font_family": self.__title_font_family,
             "title_font_size": self.__title_font_size,
-            "colormap": self.__colormap.get(),
+            "spydermap": self.__spydermap.get(),
         }
         self.__app.update_data()
 
@@ -70,6 +70,6 @@ class Interface:
 
     def __reset(self):
         self.__title.set("")
-        self.__colormap.set("viridis")
-        self.__colormap_accents.set("plasma")
+        self.__spydermap.set("viridis")
+        self.__spydermap_accents.set("plasma")
         self.__app.reset()

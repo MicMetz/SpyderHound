@@ -16,7 +16,7 @@ class SideBar:
         sidebar_frame.rowconfigure(2)
         sidebar_frame.columnconfigure(0, weight=1)
 
-        nameLabel = customtkinter.CTkLabel(master=sidebar_frame, text="Sidebar")
+        nameLabel = customtkinter.CTkLabel(master=sidebar_frame, text="")
         nameLabel.grid(row=0, column=0, sticky=W, pady=(15, 0))
         InputDataPanel(sidebar_frame, app)
         Interface(sidebar_frame, app)
