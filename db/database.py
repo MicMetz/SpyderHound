@@ -1,4 +1,5 @@
 from datetime import datetime
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.scoping import scoped_session
@@ -37,7 +38,7 @@ class Database:
 
 
 
-    def openDB(self, dbfilename):
+    def open(self, dbfilename):
 
         try:
             self.connect(dbfilename)
@@ -50,7 +51,7 @@ class Database:
 
     def connect(self, dbfilename):
         self.name = dbfilename
-        self.dbsemaphore = QSemaphore(1)  # to control concurrentconcurrent write access to db
+        self.dbsemaphore = QSemaphore(1)  # Concurrency control: Read/Write access
         self.engine = create_engine('sqlite:///' + dbfilename, connect_args={"check_same_thread": False}) or create_engine('postgresql://scott:tiger@localhost/mydatabase')
         self.session = scoped_session(sessionmaker())
         self.session.configure(bind=self.engine, autoflush=False)
@@ -75,3 +76,9 @@ class Database:
             print(e)
 
         self.dbsemaphore.release()
+
+    def close(self):
+        if self.session is not None:
+            shutdown_time = datetime.now()
+            Logger.log(Log.INFO, "Closing database session at " + str(shutdown_time))
+            self.session.close()

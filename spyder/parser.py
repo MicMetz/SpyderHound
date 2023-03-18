@@ -2,10 +2,10 @@ from html.parser import HTMLParser
 from urllib import parse
 
 
-class LinkParser(HTMLParser):
+class Parser(HTMLParser):
     """
-        LinkParser class
-        - Based on the Python General Web Spider by Bucky Roberts <https://thenewboston.com/>
+        Crawler Link Parsing Helper Functions
+     - Based on the universial web crawler by Bucky Roberts <https://thenewboston.com/>
     """
 
     def __init__(self, base_url, page_url):
@@ -26,3 +26,7 @@ class LinkParser(HTMLParser):
 
     def error(self, message):
         pass
+
+    def parse(self, html):
+        self.feed(html)
+        return self.links

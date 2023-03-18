@@ -1,5 +1,9 @@
 from urllib.parse import urlparse
 
+"""
+     Cralwer Helper Functions
+     - Based on the universial web crawler by Bucky Roberts <https://thenewboston.com/>
+ """
 
 # Get domain name (example.com)
 def get_domain_name(url):
