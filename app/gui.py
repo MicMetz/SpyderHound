@@ -1,9 +1,7 @@
-import time
-
 from PyQt6.QtWidgets import QMainWindow, QMessageBox
 
 from .progress import long_operation
-from .ui.appgui import Ui_MainWindow
+from app.ui import Ui_MainWindow
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):

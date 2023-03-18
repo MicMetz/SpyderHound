@@ -2,23 +2,16 @@ import tkinter as tk
 
 
 class OutputDataTerminal:
-    def __init__(self, parent, name, index, is_input):
-        self.parent = parent
-        self.name = name
-        self.index = index
-        self.is_input = is_input
+    def __init__(self, root):
+        self.parent = root
         self.is_connected = False
         self.connection = None
 
-        self.frame = tk.Frame(self.parent, bg="black", width=200, height=200)
-        self.frame.grid(row=0, column=self.index, sticky=(tk.N, tk.S, tk.E, tk.W), padx=5, pady=15)
-        self.frame.grid_propagate(False)
+        self.frame = tk.Frame(self.parent, bg="black")
+        self.frame.grid(row=0, column=0, sticky=(tk.N, tk.S, tk.W, tk.E))
 
-        self.label = tk.Label(self.frame, text=self.name, bg="black", fg="white")
-        self.label.grid(row=0, column=0, sticky=(tk.N, tk.S, tk.E, tk.W), padx=5, pady=15)
-
-        self.text = tk.Text(self.frame, bg="black", fg="white", height=10, width=20)
-        self.text.grid(row=1, column=0, sticky=(tk.N, tk.S, tk.E, tk.W), padx=5, pady=15)
+        self.text = tk.Text(self.frame, bg="black", fg="white", font=("Courier", 12), wrap=tk.WORD)
+        self.text.grid(row=0, column=0, sticky=(tk.N, tk.S, tk.W, tk.E))
 
         self.text.bind("<Button-1>", self.__on_click)
 

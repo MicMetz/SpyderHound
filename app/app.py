@@ -1,13 +1,14 @@
 import os
+import sys
+import tkinter as tk
 import customtkinter
 from distutils.file_util import write_file
+
+from ui.output_data_panel import OutputDataTerminal
+from ui.side_bar import SideBar
 from spyder.spawner import SpyderSpawner
-from .ui.input_data_panel import InputDataPanel
-from .ui.message_controller import MessageController
-import tkinter as tk
-from spyder.parser import Parser
-from .ui.output_data_panel import OutputDataTerminal
-from .ui.side_panel import SidePanel
+from ui.message_controller import MessageController
+
 
 
 
@@ -52,7 +53,7 @@ class AppLogger:
 
 class Application(object):
     def __init__(self, root):
-        self.parser = Parser()
+        # self.parser = Parser()
         self.message_controller = MessageController(root)
         self.spawner = SpyderSpawner()
         self.crawlers = ["Chan", "Redd", "Twit", "Tar"]
@@ -60,23 +61,32 @@ class Application(object):
         self.output_properties = {}
 
         root.title("SpyderHound")
-        root.geometry("1200x800")
-        menu_panel = tk.Menu(root)
-        root.config(menu=menu_panel)
+        root.option_add("*tearOff", tk.FALSE)
 
-        filemenu = tk.Menu(menu_panel, tearoff=0)
-        filemenu.add_command(label="Load", command=self.load)
-        filemenu.add_command(label="Save", command=self.save)
-        filemenu.add_command(label="Help", command=self.help)
-        filemenu.add_command(label="Run", command=self.run)
-        filemenu.add_command(label="Exit", command=self.quit)
+        # Menubar
+        root.menu = tk.Menu(root)
+
+        menu_file = tk.Menu(root.menu)
+        # File menu
+        root.menu.add_cascade(menu=menu_file, label="File")
+        # menu_file.add_command(label="Save as", command=self.__save_as, underline=0)
+        menu_file.add_command(label="Exit", command=sys.exit, underline=0)
+        # Help menu
+        menu_help = tk.Menu(root.menu)
+        root.menu.add_cascade(menu=menu_help, label="Help")
+        menu_help.add_command(label="Documentation", command=self.__open_documentation, underline=0)
 
         main_frame = customtkinter.CTkFrame(master=root)
-        main_frame.grid(row=0, column=0, sticky=(tk.N, tk.S, tk.E, tk.W), padx=5, pady=15)
+        main_frame.grid(column=0, row=0, sticky=(tk.N, tk.W, tk.E, tk.S), padx=3, pady=12)
 
-        self.side_panel = SidePanel(main_frame, self)
-        self.input_data = InputDataPanel(main_frame, self)
+        self.side_panel = SideBar(main_frame, self)
         self.output_data = OutputDataTerminal(main_frame)
+
+        root.rowconfigure(0, weight=1)
+        root.columnconfigure(0, weight=1)
+        main_frame.rowconfigure(0, weight=1, minsize=500)
+        main_frame.columnconfigure(0, weight=3, minsize=800)
+        main_frame.columnconfigure(1, weight=1, minsize=300)
 
 
 
@@ -134,20 +144,27 @@ class Application(object):
                 f.write(l + "\n")
 
 
-    def help(self):
-        self.message_controller.show_message("Help", "Help")
+    def __save_as(self):
+        pass
 
-    def load(self):
-        self.message_controller.show_message("Load", "Load")
+    def __open_documentation(self):
+        pass
 
-    def save(self):
-        self.message_controller.show_message("Save", "Save")
+    def __open_about(self):
+        pass
 
-    def clear(self):
-        self.message_controller.show_message("Clear", "Clear")
+    def __open_settings(self):
+        pass
 
-    def quit(self):
-        self.message_controller.show_message("Quit", "Quit")
+    def __open_help(self):
+        pass
 
-    def run(self):
-        self.message_controller.show_message("Run", "Run")
+
+
+
+if __name__ == '__main__':
+    root = customtkinter.CTk()
+    root.protocol("WM_DELETE_WINDOW", root.quit)
+    root.minsize(1480, 720)
+    Application(root)
+    root.mainloop()
