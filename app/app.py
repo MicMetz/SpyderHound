@@ -64,17 +64,16 @@ class Application(object):
         root.option_add("*tearOff", tk.FALSE)
 
         # Menubar
-        root.menu = tk.Menu(root)
-
-        menu_file = tk.Menu(root.menu)
-        # File menu
-        root.menu.add_cascade(menu=menu_file, label="File")
-        # menu_file.add_command(label="Save as", command=self.__save_as, underline=0)
-        menu_file.add_command(label="Exit", command=sys.exit, underline=0)
-        # Help menu
-        menu_help = tk.Menu(root.menu)
-        root.menu.add_cascade(menu=menu_help, label="Help")
-        menu_help.add_command(label="Documentation", command=self.__open_documentation, underline=0)
+        menu_panel = tk.Menu(root)
+        root.config(menu=menu_panel)
+        filemenu = tk.Menu(menu_panel)
+        menu_panel.add_cascade(label="File", menu=filemenu)
+        filemenu.add_command(label="Load", command=self.__load)
+        filemenu.add_command(label="Save", command=self.__save)
+        menu_panel.add_cascade(label="Run", command=self.__run)
+        menu_panel.add_cascade(label="Stop", command=self.__stop)
+        menu_panel.add_cascade(label="Help", command=self.__help)
+        menu_panel.add_cascade(label="Exit", command=self.__quit)
 
         main_frame = customtkinter.CTkFrame(master=root)
         main_frame.grid(column=0, row=0, sticky=(tk.N, tk.W, tk.E, tk.S), padx=3, pady=12)
@@ -144,20 +143,23 @@ class Application(object):
                 f.write(l + "\n")
 
 
-    def __save_as(self):
+    def __save(self):
         pass
 
-    def __open_documentation(self):
+    def __load(self):
         pass
 
-    def __open_about(self):
+    def __help(self):
         pass
 
-    def __open_settings(self):
+    def __run(self):
         pass
 
-    def __open_help(self):
+    def __stop(self):
         pass
+
+    def __quit(self):
+        sys.exit(0)
 
 
 
