@@ -39,7 +39,7 @@ A. The first draft of the GUI can be found in the [documentation](./documentatio
 
 B. The second draft of the GUI can be found in the [documentation](./documentation) folder.
     You can see that the GUI has been updated to include how the application will be designed around the user conducting multiple scrapes simultaneously.
-![A more developed outline of how the GUI should look.](C:\Users\blahh\Documents\SchoolWork\Spring2023\NaturalLanguageProcessing\Project\spyderHound\documentation\images\Interface_Second_Draft.PNG "Second Draft")
+![A more developed outline of how the GUI should look.](./documentation/images/Interface_Second_Draft.PNG "Second Draft")
 
 
 
