@@ -31,4 +31,4 @@ class HateSpeechSpyder(scrapy.Spider):
                 data.append(row)
 
         df = pd.DataFrame(data)
-        df.to_csv("hatespeech.csv", index=False)
+        df.to_csv("../data/hatespeech.csv", index=False)
