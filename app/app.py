@@ -1,6 +1,8 @@
 import os
 import sys
 import tkinter as tk
+import traceback
+
 import customtkinter
 from distutils.file_util import write_file
 
@@ -19,6 +21,11 @@ customtkinter.set_appearance_mode("Dark")  # Modes: "System" (standard), "Dark",
 customtkinter.set_default_color_theme("green")  # Themes: "blue" (standard), "green", "dark-blue"
 
 
+def new_excepthook(type, value, tb):
+    traceback.print_exception(type, value, tb)
+
+
+sys.excepthook = new_excepthook
 
 
 class AppLogger:
