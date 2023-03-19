@@ -8,10 +8,10 @@ class OutputDataTerminal:
         self.connection = None
 
         self.frame = tk.Frame(self.parent, bg="black")
-        self.frame.grid(row=0, column=0, sticky=(tk.N, tk.S, tk.W, tk.E))
+        self.frame.grid(row=0, column=0, sticky="nsew", padx=20, pady=(0, 20))
 
         self.text = tk.Text(self.frame, bg="black", fg="white", font=("Courier", 12), wrap=tk.WORD)
-        self.text.grid(row=0, column=0, sticky=(tk.N, tk.S, tk.W, tk.E))
+        self.text.grid(row=0, column=0, sticky="nsew", padx=20, pady=(0, 20))
 
         self.text.bind("<Button-1>", self.__on_click)
 

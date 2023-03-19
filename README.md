@@ -2,30 +2,18 @@
 
 ## Usage
 
+### Run
+<hr>
+
 Start the app with `python run.py` or as a module: `python -m app`.
 
-## Setup
-
-A. The GUI is built with tkinter, and customtkinter:
-
-```commandline
-pip install customtkinter && pip install tkinter
-```
-
+### Setup
 <hr>
-<br>
 
-B. To produce a standalone .exe file, also install pyinstaller:
+1. The GUI is built with tkinter, and customtkinter: `python pip install customtkinter && pip install tkinter`
 
-```commandline
-pip install pyinstaller
-```
+2. To produce a standalone .exe file, also install pyinstaller, `pip install pyinstaller`; then run the build batch script, `tools\make_exe.bat` to produce the .exe file.
 
-Then run the `build batch` script to produce the .exe file.
-
-```commandline
-tools\make_exe.bat
-```
 
 <hr>
 <br>

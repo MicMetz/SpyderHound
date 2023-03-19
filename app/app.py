@@ -4,10 +4,19 @@ import tkinter as tk
 import customtkinter
 from distutils.file_util import write_file
 
-from ui.output_data_panel import OutputDataTerminal
-from ui.side_bar import SideBar
+from customtkinter import CTk
+
+from ui.entrybar import MainEntry
+from target import Target
 from spyder.spawner import SpyderSpawner
+from ui.output_data_panel import OutputDataTerminal
+from ui.sidebar import SideBar
 from ui.message_controller import MessageController
+
+
+
+customtkinter.set_appearance_mode("Dark")  # Modes: "System" (standard), "Dark", "Light"
+customtkinter.set_default_color_theme("green")  # Themes: "blue" (standard), "green", "dark-blue"
 
 
 
@@ -51,41 +60,44 @@ class AppLogger:
 
 
 
-class Application(object):
-    def __init__(self, root):
+class Application(CTk):
+    def __init__(self):
+        super().__init__()
+        # self.__init_ui()
         # self.parser = Parser()
-        self.message_controller = MessageController(root)
+        self.protocol("WM_DELETE_WINDOW", self.quit)
+        self.geometry(f"{1480}x{720}")
+        self.grid_columnconfigure(1, weight=1)
+        self.grid_columnconfigure((2, 3), weight=0)
+        self.grid_rowconfigure((0, 1, 2), weight=1)
+
+        self.message_controller = MessageController(self)
         self.spawner = SpyderSpawner()
         self.crawlers = ["Chan", "Redd", "Twit", "Tar"]
+        self.targets = [Target()]
         self.data = None
         self.output_properties = {}
 
-        root.title("SpyderHound")
-        root.option_add("*tearOff", tk.FALSE)
+        self.title("SpyderHound")
 
         # Menubar
-        menu_panel = tk.Menu(root)
-        root.config(menu=menu_panel)
-        filemenu = tk.Menu(menu_panel)
-        menu_panel.add_cascade(label="File", menu=filemenu)
-        filemenu.add_command(label="Load", command=self.__load)
-        filemenu.add_command(label="Save", command=self.__save)
-        menu_panel.add_cascade(label="Run", command=self.__run)
-        menu_panel.add_cascade(label="Stop", command=self.__stop)
-        menu_panel.add_cascade(label="Help", command=self.__help)
-        menu_panel.add_cascade(label="Exit", command=self.__quit)
+        # menu_panel = tk.Menu(self)
+        # self.config(menu=menu_panel)
+        # filemenu = tk.Menu(menu_panel)
+        # menu_panel.add_cascade(label="File", menu=filemenu)
+        # filemenu.add_command(label="Load", command=self.__load)
+        # filemenu.add_command(label="Save", command=self.__save)
+        # menu_panel.add_cascade(label="Run", command=self.__run)
+        # menu_panel.add_cascade(label="Stop", command=self.__stop)
+        # menu_panel.add_cascade(label="Help", command=self.__help)
+        # menu_panel.add_cascade(label="Exit", command=self.__quit)
 
-        main_frame = customtkinter.CTkFrame(master=root)
-        main_frame.grid(column=0, row=0, sticky=(tk.N, tk.W, tk.E, tk.S), padx=3, pady=12)
+        # main_frame = customtkinter.CTkFrame(master=self)
+        # main_frame.grid(column=0, row=0, sticky=(tk.N, tk.W, tk.E, tk.S), padx=3, pady=12)
 
-        self.side_panel = SideBar(main_frame, self)
-        self.output_data = OutputDataTerminal(main_frame)
-
-        root.rowconfigure(0, weight=1)
-        root.columnconfigure(0, weight=1)
-        main_frame.rowconfigure(0, weight=1, minsize=500)
-        main_frame.columnconfigure(0, weight=3, minsize=800)
-        main_frame.columnconfigure(1, weight=1, minsize=300)
+        self.side_panel = SideBar(self)
+        self.entry_panel = MainEntry(self)
+        # self.output_data = OutputDataTerminal(self)
 
 
 
@@ -143,6 +155,14 @@ class Application(object):
                 f.write(l + "\n")
 
 
+    def switch_panel(self, panel):
+        match panel:
+            case "RawCombinedOutput":
+                # self.output_data = OutputDataTerminal(self)
+                pass
+
+
+
     def __save(self):
         pass
 
@@ -165,8 +185,5 @@ class Application(object):
 
 
 if __name__ == '__main__':
-    root = customtkinter.CTk()
-    root.protocol("WM_DELETE_WINDOW", root.quit)
-    root.minsize(1480, 720)
-    Application(root)
+    root = Application()
     root.mainloop()

@@ -16,7 +16,6 @@ class InputDataPanel:
         input_panel.rowconfigure(1, pad=20)
         input_panel.rowconfigure(2, pad=20)
 
-
         self.__app = app
         self.__file_path = tk.StringVar(input_panel, "No file selected")
         self.file_object = None
@@ -28,7 +27,7 @@ class InputDataPanel:
         panel_button = customtkinter.CTkButton(master=input_panel, text="Select file", command=self.__select_file)
         panel_button.grid(row=1, column=2, sticky=(tk.W, tk.E), padx=25, pady=25)
 
-        panel_file_path_label = customtkinter.CTkLabel(master=input_panel, textvariable=self.__file_path,  anchor=tk.W)
+        panel_file_path_label = customtkinter.CTkLabel(master=input_panel, textvariable=self.__file_path, anchor=tk.W)
         panel_file_path_label.grid(row=1, column=1, sticky=(tk.W, tk.E), padx=25, pady=25)
 
 
