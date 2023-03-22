@@ -37,9 +37,14 @@ A. The first draft of the GUI can be found in the [documentation](./documentatio
 
 <br>
 
-B. The second draft of the GUI can be found in the [documentation](./documentation) folder.
-    You can see that the GUI has been updated to include how the application will be designed around the user conducting multiple scrapes simultaneously.
+B. The second draft of the GUI can be found in the [documentation](./documentation) folder.You can see that the GUI has been updated to include how the application will be designed around the user conducting multiple scrapes simultaneously.
 ![A more developed outline of how the GUI should look.](./documentation/images/Interface_Second_Draft.PNG "Second Draft")
 
+<br>
 
+C. 
+    ![Light Mode](./documentation/images/Interface_Second_Draft_Light.PNG "Light Mode") 
+    ![Splash Screen](./documentation/images/Splash_First_Draft.PNG "Splash Screen") 
+
+<br>
 

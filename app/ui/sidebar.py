@@ -14,7 +14,7 @@ class SideBar(CTkFrame):
     def __init__(self, root):
         super().__init__(master=root)
         self.app = root
-        self.active_targets = self.app.targets
+        self.active_targets = root.targets
         self.width = 140
 
         self.grid(row=0, column=0, rowspan=4, sticky="nsew")
