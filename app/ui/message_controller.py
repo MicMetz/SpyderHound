@@ -7,6 +7,7 @@ class MessageController:
         self.root = root
         self.message = None
 
+
     def show_message(self, message, type):
         if type == "Error":
             messagebox.showerror("Error", message)
@@ -19,3 +20,7 @@ class MessageController:
         else:
             messagebox.showinfo("Info", message)
 
+
+    def add_message(self, messageString):
+        self.message.append(messageString)
+        self.message.append("\n")

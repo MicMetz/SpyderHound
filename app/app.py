@@ -27,16 +27,16 @@ sys.excepthook = new_excepthook
 
 def clear(*widgets):
     for widget in widgets:
-        if widget.winfo_exists():
-            widget.destroy()
+        # if widget.winfo_exists():
+        widget.destroy()
 
     return widgets
 
 
 class Application(CTk):
-    def __init__(self):
-        super().__init__()
-        self.main_color = "cornflower blue"
+    def __init__(self, master=None):
+        CTk.__init__(self, master)
+        # self.main_color = "cornflower blue"
         self.protocol("WM_DELETE_WINDOW", self.quit)
         self.geometry(f"{1480}x{720}")
         # self.configure(bg="black")
@@ -46,8 +46,9 @@ class Application(CTk):
         self.grid_rowconfigure((0, 1, 2), weight=1)
 
         self.message_controller = MessageController(self)
-        self.spawner = SpyderSpawner()
-        self.crawlers = ["Chan", "Redd", "Twit", "Tar"]
+        self.spawner = None
+        self.active_crawlers = []
+        self.scraper = None
         self.targets = [Target()]
         self.data = None
         self.output_properties = {}
@@ -57,6 +58,12 @@ class Application(CTk):
         self.splashPage()
 
         # self.output_data = OutputDataTerminal(self)
+
+    def __start(self):
+        self.spawner = SpyderSpawner(self)
+        self.spawner.start()
+
+
 
 
     def mainPage(self):
@@ -82,9 +89,8 @@ class Application(CTk):
         # output_data = OutputDataTerminal(mainFrame)
 
 
-
     def splashPage(self):
-        splashFrame = customtkinter.CTkFrame(master=self)
+        splashFrame: CTkFrame = customtkinter.CTkFrame(master=self)
         splashFrame.place(relx=0, rely=0, relheight=0.9, relwidth=1)
 
         splashTitle = tk.Label(splashFrame, text="SpyderHound", bg="green", fg="black")
@@ -99,7 +105,14 @@ class Application(CTk):
         splashSubsubTitle.config(font=("MS Sans Serif", 15))
         splashSubsubTitle.place(relx=0.1, rely=0.4, relheight=0.1, relwidth=0.8)
 
-        self.after((delay := 4000), lambda: self.after(clear(splashFrame), self.mainPage()))
+        return self.after((delay := 4000), lambda: self.after(clear(splashFrame), self.mainPage()))
+
+
+    def execute(self, searchphrase, target, crawler):
+        self.message_controller.add_message(f"Executing {crawler} on {target} with search phrase: {searchphrase}")
+        self.spawner.spawn(crawler, target, searchphrase)
+
+        validity, response = self.scraper.get_status()
 
 
 
