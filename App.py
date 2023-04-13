@@ -7,7 +7,7 @@ import tkinter as tk
 import os.path
 import customtkinter as ck
 
-from ui.InputEntry import InputEntry
+from ui.InputTerminal import InputTerminal
 from ui.SidePanel import SidePanel
 from core.Target import Target
 
@@ -29,7 +29,7 @@ class Application(ck.CTk):
 
     entry_panel: tk.Entry = None
     controller: Controller = None
-    input_panel: InputEntry = None
+    input_panel: InputTerminal = None
     side_panel: SidePanel = None
     targets: [Target()] = None
 
@@ -102,7 +102,7 @@ class Application(ck.CTk):
         self.targets = [Target()]
         self.side_panel = SidePanel(self)
         self.controller.start()
-        self.input_panel = InputEntry(self)
+        self.input_panel = InputTerminal(self)
 
 
 

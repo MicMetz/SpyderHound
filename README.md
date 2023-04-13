@@ -28,6 +28,40 @@ Start the app with `python run.py` or as a module: `python -m app`.
 ## Development
 <hr>
 
+### Project Structure
+
+The project is structured as follows:
+
+```
+.
+├── core (Core Application Logic)
+│   ├── Controller.py
+│   ├── Target.py
+│   ├── Domain.py
+│   ├── Database.py
+├── data (Web Scraping Results)
+│   ├── [Target Name]
+│   │   ├── [Domain Name]
+│   │   │   ├── [Date]
+│   │   │   │   ├── [Time]
+│   │   │   │   │   ├── [Data]
+│   │   │   │   │   │   ├── [Data Type]
+├── documentation (Documentation)
+│   ├── images (Images)
+├── resources (Resources)
+├── ui (User Interface Tkinter Design)
+│   ├── OutputTerminal.py
+│   ├── InputTerminal.py
+│   ├── SidePanel.py
+│   ├── MessageTerminal.py
+├── tools (Not Yet Implemented)
+├── App.py (Main Application Entry Point)
+
+```
+
+
+
+
 ### GUI
 
 The GUI is built with tkinter, and customtkinter.
@@ -47,4 +81,6 @@ C.
     ![Splash Screen](./documentation/images/Splash_First_Draft.PNG "Splash Screen") 
 
 <br>
+
+
 

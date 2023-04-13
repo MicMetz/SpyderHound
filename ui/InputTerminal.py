@@ -4,7 +4,7 @@ import tkinter as tk
 
 
 
-class InputEntry(CTkEntry):
+class InputTerminal(CTkEntry):
     def __init__(self, root):
         super().__init__(master=root.main_container)
         self.parent= root
