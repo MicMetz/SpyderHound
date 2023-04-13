@@ -1,7 +1,1 @@
-.idea/
-build/
-dist/
-*.spec
-*.pyc
-*.exe
-db/config/.env
+/.env
