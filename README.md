@@ -82,5 +82,10 @@ C.
 
 <br>
 
+Final GUI:
+![Final GUI](./documentation/images/Final_Draft_Splash.PNG "Final Splash Screen")
+![Final GUI](./documentation/images/Final_Draft_Layout.PNG "Final GUI Layout")
+![Final GUI](./documentation/images/Scrape_Results_Example.PNG "Final GUI Layout")
+
 
 
