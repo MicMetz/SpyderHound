@@ -1,13 +1,13 @@
-import sys
 import os
+import sys
 import tkinter as tk
 import customtkinter as ck
-import pandas as pd
 
+from MainPage import MainPage
+from SplashPage import SplashPage
 from core.HateSpeech import HateSpeechSpider
 from core.ui.InputTerminal import InputTerminal
 from core.Controller import Controller
-from core.ui.OutputTerminal import OutputTerminal
 from core.ui.SidePanel import SidePanel
 from core.Target import Target
 
@@ -72,68 +72,6 @@ class Application(ck.CTk):
         self.__loadFrames()
 
 
-    class splashPage(ck.CTkFrame):
-        def __init__(self, parent, controller):
-            ck.CTkFrame.__init__(self, parent)
-            self.controller = controller
-            self.grid_columnconfigure(0, weight=1)
-            self.grid_rowconfigure(0, weight=1)
-
-            splashTitle = tk.Label(self, text="SpyderHound", bg="black", fg="red")
-            splashTitle.config(font=("MS Sans Serif", 50))
-            splashTitle.grid(row=0, column=0, sticky="nsew")
-
-            splashIcon = tk.PhotoImage(file="core/assets/hater.png")
-            splashIconLabel = tk.Label(self, image=splashIcon, bg="black")
-            splashIconLabel.image = splashIcon
-            splashIconLabel.grid(row=0, column=1, sticky="nsew")
-
-            splashSubTitle = tk.Label(self, text="Hate-Crawler", bg="black", fg="red")
-            splashSubTitle.config(font=("MS Sans Serif", 25))
-            splashSubTitle.grid(row=1, column=0, sticky="nsew")
-
-            self.after((delay := 4000), lambda: self.controller.switch_panel("mainPage"))
-
-
-    class mainPage(ck.CTkFrame):
-        def __init__(self, parent, controller):
-            ck.CTkFrame.__init__(self, parent)
-            self.parent = parent
-            self.grid_columnconfigure(0, weight=1)
-            self.grid_rowconfigure(0, weight=1)
-
-            self.parent.targets = [Target()]
-            self.parent.side_panel = SidePanel(self.parent, self)
-            self.parent.controller = Controller(self.parent, self)
-            self.parent.input_panel = InputTerminal(self.parent, self)
-
-
-    def __loadFrames(self):
-        menu_panel = tk.Menu(self)
-        self.config(menu=menu_panel)
-        filemenu = tk.Menu(menu_panel)
-        menu_panel.add_cascade(label="File", menu=filemenu)
-        filemenu.add_command(label="Load", command=self.__load)
-        filemenu.add_command(label="Save", command=self.__save)
-        menu_panel.add_cascade(label="Run", command=self.__run)
-        menu_panel.add_cascade(label="Stop", command=self.__stop)
-        menu_panel.add_cascade(label="Help", command=self.__help)
-        menu_panel.add_cascade(label="Exit", command=self.__quit)
-
-        for F in (self.splashPage, self.mainPage):
-            page_name = F.__name__
-            frame = F(parent=self.frame, controller=self)
-            self.frames[page_name] = frame
-            frame.grid(row=0, column=0, sticky="nsew")
-
-        self.switch_panel("splashPage")
-
-
-
-    def _root_size(self) -> str:
-        return f"{self.sizeX}x{self.sizeY}"
-
-
     def on_extract(self, event):
         self.controller.console.insert(tk.END, "Scraping data...\n")
         self.controller.url = event
@@ -175,6 +113,36 @@ class Application(ck.CTk):
 
         self.controller.console.insert(tk.END, "\n Saving text found in domain by heading \n")
         self.controller.save_paragraphs_by_heading(domain_dir)
+
+
+
+    def __loadFrames(self):
+        menu_panel = tk.Menu(self)
+        self.config(menu=menu_panel)
+        filemenu = tk.Menu(menu_panel)
+        menu_panel.add_cascade(label="File", menu=filemenu)
+        filemenu.add_command(label="Load", command=self.__load)
+        filemenu.add_command(label="Save", command=self.__save)
+        menu_panel.add_cascade(label="Run", command=self.__run)
+        menu_panel.add_cascade(label="Stop", command=self.__stop)
+        menu_panel.add_cascade(label="Help", command=self.__help)
+        menu_panel.add_cascade(label="Exit", command=self.__quit)
+
+        # for F in (SplashPage, MainPage, AnalysisPage, DataPage,
+        for F in (SplashPage, MainPage):
+            page_name = F.__name__
+            frame = F(frame=self.frame, parent=self)
+            self.frames[page_name] = frame
+            frame.grid(row=0, column=0, sticky="nsew")
+
+        self.switch_panel("SplashPage")
+
+
+
+    def _root_size(self) -> str:
+        return f"{self.sizeX}x{self.sizeY}"
+
+
 
 
     def execute(self, searchphrase, target, crawler):
@@ -259,10 +227,6 @@ class Application(ck.CTk):
 
 
 if __name__ == "__main__":
-    # root = tk.Tk()
-    # root.resizable(False, False)
-    # view = Application(root)
     view = Application()
-
     icon = tk.PhotoImage(file="core/assets/hater.png")
     view.mainloop()

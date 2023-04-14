@@ -5,9 +5,9 @@ import tkinter as tk
 
 
 class InputTerminal(CTkEntry):
-    def __init__(self, root, frame):
+    def __init__(self, parent, frame):
         super().__init__(master=frame)
-        self.parent= root
+        self.parent= parent
         self.bg_color = "black"
         self.fg_color = "white"
         self.font = ("Consolas", 12)
@@ -62,7 +62,17 @@ class InputTerminal(CTkEntry):
 
 
     def on_enter(self):
-        self.parent.on_extract(self.get())
+        if self.get() == "":
+            return
+        self.history[self.history_index] = self.get()
+        self.history_index += 1
+        if self.history_index >= len(self.history):
+            self.history.append("")
+        self.delete(0, tk.END)
+        self.history[self.history_index] = ""
+        self.parent.on_extract(self.history[self.history_index - 1])
+
+        # self.parent.on_extract(self.get())
         # self.history[self.history_index] = self.get()
         # self.history_index += 1
         # if self.history_index >= len(self.history):
