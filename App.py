@@ -1,29 +1,45 @@
 import sys
-
-from customtkinter import CTkFrame
-
-from core.Controller import Controller
+import os
 import tkinter as tk
-import os.path
 import customtkinter as ck
+import pandas as pd
 
-from ui.InputTerminal import InputTerminal
-from ui.SidePanel import SidePanel
+from core.HateSpeech import HateSpeechSpider
+from core.ui.InputTerminal import InputTerminal
+from core.Controller import Controller
+from core.ui.OutputTerminal import OutputTerminal
+from core.ui.SidePanel import SidePanel
 from core.Target import Target
 
+
+
+if os.path.exists(".env"):
+    for line in open(".env"):
+        var = line.strip().split("=")
+        if len(var) == 2:
+            os.environ[var[0]] = var[1]
+
+if not os.path.exists('resources/hate_speech.csv'):
+    HateSpeechSpider().start_requests()
+
+# hate_frame = pd.read_csv('resources/hate_speech.csv')
 
 
 class Application(ck.CTk):
     bg_color = "black"
     fg_color = "black"
-    data_dir = 'data'
+    data_dir = 'output'
     title_str = "SpyderHound"
 
     sizeX = 1480
     sizeY = 720
     master = None
     database = None
-    main_container: ck.CTkFrame = None
+    frame = None
+    main_frame = None
+    analysis_frame = None
+    data_frame = None
+    splash_frame = None
     frames = {}
     # frames = {"mainpage": CTkFrame, "splash": CTkFrame}
 
@@ -36,7 +52,6 @@ class Application(ck.CTk):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.side_panel = None
         self.entry_panel = None
         self.input_panel = None
         self.controller = None
@@ -46,47 +61,54 @@ class Application(ck.CTk):
         self.protocol("WM_DELETE_WINDOW", self.quit)
         self.geometry(self._root_size())
         self.configure(bg=self.bg_color, fg=self.fg_color)
-        self.grid_columnconfigure(1, weight=1)
-        self.grid_columnconfigure((2, 3), weight=0)
-        self.grid_rowconfigure((0, 1, 2), weight=1)
 
-        self.main_container = ck.CTkFrame(self, width=self.sizeX, height=self.sizeY, corner_radius=0)
-        self.main_container.grid_columnconfigure(1, weight=1)
-        self.main_container.grid_columnconfigure((2, 3), weight=0)
-        self.main_container.grid_rowconfigure((0, 1, 2), weight=1)
-        self.main_container.grid(row=0, column=0, rowspan=4, columnspan=4, sticky="nsew")
-        self.main_container.grid_rowconfigure(4, weight=1)
+        self.frame = ck.CTkFrame(self)
+        self.frame.pack(side="top", fill="both", expand=True)
+        self.frame.grid_columnconfigure(0, weight=1)
+        self.frame.grid_rowconfigure(0, weight=1)
 
         # self.pack()
-        self.splashPage()
-        # self.__loadFrames()
+        # self.splashPage()
+        self.__loadFrames()
 
 
-    def splashPage(self):
-        self.frames["splash"] = ck.CTkFrame(self.main_container)
-        self.frames["splash"].pack()
+    class splashPage(ck.CTkFrame):
+        def __init__(self, parent, controller):
+            ck.CTkFrame.__init__(self, parent)
+            self.controller = controller
+            self.grid_columnconfigure(0, weight=1)
+            self.grid_rowconfigure(0, weight=1)
 
-        splashTitle = tk.Label(self.frames["splash"], text="SpyderHound", bg="black", fg="red")
-        splashTitle.config(font=("MS Sans Serif", 50))
-        splashTitle.grid(row=0, column=0, sticky="nsew")
+            splashTitle = tk.Label(self, text="SpyderHound", bg="black", fg="red")
+            splashTitle.config(font=("MS Sans Serif", 50))
+            splashTitle.grid(row=0, column=0, sticky="nsew")
 
-        splashIcon = tk.PhotoImage(file="resources/hater.png")
-        splashIconLabel = tk.Label(self.frames["splash"], image=splashIcon, bg="black")
-        splashIconLabel.image = splashIcon
-        splashIconLabel.grid(row=0, column=1, sticky="nsew")
+            splashIcon = tk.PhotoImage(file="core/assets/hater.png")
+            splashIconLabel = tk.Label(self, image=splashIcon, bg="black")
+            splashIconLabel.image = splashIcon
+            splashIconLabel.grid(row=0, column=1, sticky="nsew")
 
-        splashSubTitle = tk.Label(self.frames["splash"], text="Hate-Crawler", bg="black", fg="red")
-        splashSubTitle.config(font=("MS Sans Serif", 25))
-        splashSubTitle.grid(row=1, column=0, sticky="nsew")
+            splashSubTitle = tk.Label(self, text="Hate-Crawler", bg="black", fg="red")
+            splashSubTitle.config(font=("MS Sans Serif", 25))
+            splashSubTitle.grid(row=1, column=0, sticky="nsew")
 
-        self.after((delay := 4000), lambda: self.after(self.frames["splash"].pack_forget(), self.__loadFrames()))
+            self.after((delay := 4000), lambda: self.controller.switch_panel("mainPage"))
+
+
+    class mainPage(ck.CTkFrame):
+        def __init__(self, parent, controller):
+            ck.CTkFrame.__init__(self, parent)
+            self.parent = parent
+            self.grid_columnconfigure(0, weight=1)
+            self.grid_rowconfigure(0, weight=1)
+
+            self.parent.targets = [Target()]
+            self.parent.side_panel = SidePanel(self.parent, self)
+            self.parent.controller = Controller(self.parent, self)
+            self.parent.input_panel = InputTerminal(self.parent, self)
 
 
     def __loadFrames(self):
-
-        # self.frames["mainpage"] = ck.CTkFrame(self.main_container)
-        # self.frames["mainpage"].pack()
-
         menu_panel = tk.Menu(self)
         self.config(menu=menu_panel)
         filemenu = tk.Menu(menu_panel)
@@ -98,11 +120,13 @@ class Application(ck.CTk):
         menu_panel.add_cascade(label="Help", command=self.__help)
         menu_panel.add_cascade(label="Exit", command=self.__quit)
 
-        self.controller = Controller(self)
-        self.targets = [Target()]
-        self.side_panel = SidePanel(self)
-        self.controller.start()
-        self.input_panel = InputTerminal(self)
+        for F in (self.splashPage, self.mainPage):
+            page_name = F.__name__
+            frame = F(parent=self.frame, controller=self)
+            self.frames[page_name] = frame
+            frame.grid(row=0, column=0, sticky="nsew")
+
+        self.switch_panel("splashPage")
 
 
 
@@ -111,74 +135,76 @@ class Application(ck.CTk):
 
 
     def on_extract(self, event):
-        self.controller.log_area.insert(tk.END, "Scraping data...\n")
+        self.controller.console.insert(tk.END, "Scraping data...\n")
         self.controller.url = event
         self.controller.set_domain_url()
 
         self.targets.append(Target(self.controller.get_domain_data(), self.controller.url))
 
         if not os.path.exists(self.data_dir):
-            self.controller.log_area.insert(tk.END, f"Creating directory {self.data_dir}\n")
+            self.controller.console.insert(tk.END, f"Creating directory {self.data_dir}\n")
             os.mkdir(self.data_dir)
 
         # Remove http(s):// www. and any trailing slashes or .html from the url and replace with nothing
         tag = (self.controller.url.replace(".html", "").replace(".htm", "").replace(".php", "").replace("https://", "").replace("http://", "")).replace("/", "-")
         domain_dir = f"{self.data_dir}/{tag}"
         if not os.path.exists(domain_dir):
-            self.controller.log_area.insert(tk.END, f"Creating directory {domain_dir}\n")
+            self.controller.console.insert(tk.END, f"Creating directory {domain_dir}\n")
             os.mkdir(domain_dir)
 
-        self.controller.log_area.insert(tk.END, "Scrap success! \n")
+        self.controller.console.insert(tk.END, "Scrap success! \n")
 
         emails = self.controller.get_email_list()
         links = self.controller.get_links()
         images = self.controller.get_images()
 
-        self.controller.log_area.insert(tk.END, "\n Saving email addresses found in domain \n")
+        self.controller.console.insert(tk.END, "\n Saving email addresses found in domain \n")
         self.controller.save_emails(domain_dir)
 
-        self.controller.log_area.insert(tk.END, "\n Saving heading list in {self.controller.url}.txt\n")
+        self.controller.console.insert(tk.END, "\n Saving heading list in {self.controller.url}.txt\n")
         self.controller.save_headings(domain_dir)
 
-        self.controller.log_area.insert(tk.END, "\n Saving links found in domain \n")
+        self.controller.console.insert(tk.END, "\n Saving links found in domain \n")
         self.controller.save_links(domain_dir)
 
-        self.controller.log_area.insert(tk.END, "\n Saving images found in domain \n")
+        self.controller.console.insert(tk.END, "\n Saving images found in domain \n")
         self.controller.save_images(domain_dir)
 
-        self.controller.log_area.insert(tk.END, "\n Saving text found in domain \n")
+        self.controller.console.insert(tk.END, "\n Saving text found in domain \n")
         self.controller.save_paragraphs(domain_dir)
 
-        self.controller.log_area.insert(tk.END, "\n Saving text found in domain by heading \n")
+        self.controller.console.insert(tk.END, "\n Saving text found in domain by heading \n")
         self.controller.save_paragraphs_by_heading(domain_dir)
 
 
     def execute(self, searchphrase, target, crawler):
-        self.controller.log_area.insert(tk.END, "Scraping data...\n")
+        self.controller.console.insert(tk.END, "Scraping data...\n")
         self.controller.url = self.entry_panel.get()
         self.controller.set_domain_url()
-        self.controller.log_area.insert(tk.END, "Scrap success!\n")
-        self.controller.log_area.insert(tk.END, f"Saving email list in {self.controller.url}.txt\n")
+        self.controller.console.insert(tk.END, "Scrap success!\n")
+        self.controller.console.insert(tk.END, f"Saving email list in {self.controller.url}.txt\n")
         emails = self.controller.get_email_list()
         links = self.controller.get_links()
         images = self.controller.get_images()
 
         if len(emails) > 0:
-            self.controller.log_area.insert(tk.END, f"Emails found!\n")
+            self.controller.console.insert(tk.END, f"Emails found!\n")
             for email in emails:
-                self.controller.log_area.insert(tk.END, f"Email found: {email}\n")
+                self.controller.console.insert(tk.END, f"Email found: {email}\n")
             self.controller.save_emails()
         else:
-            self.controller.log_area.insert(tk.END, f"No Email found.\n")
+            self.controller.console.insert(tk.END, f"No Email found.\n")
 
-        self.controller.log_area.insert(tk.END, f"Saving heading list in {self.controller.url}.txt\n")
+        self.controller.console.insert(tk.END, f"Saving heading list in {self.controller.url}.txt\n")
         self.controller.save_headings()
 
 
+
     def switch_panel(self, panel):
-        self.ma
-        self.side_panel = panel
-        self.side_panel.pack(padx=5, pady=5, ipadx=self.sizeX / 4, side=tk.LEFT, fill=tk.X, expand=True, anchor=tk.S)
+        # self.frame.pack_forget()
+        self.frame = self.frames[panel]
+        self.frame.tkraise()
+
 
 
     def __new(self):
@@ -238,5 +264,5 @@ if __name__ == "__main__":
     # view = Application(root)
     view = Application()
 
-    icon = tk.PhotoImage(file="resources/hater.png")
+    icon = tk.PhotoImage(file="core/assets/hater.png")
     view.mainloop()

@@ -5,8 +5,8 @@ import tkinter as tk
 
 
 class InputTerminal(CTkEntry):
-    def __init__(self, root):
-        super().__init__(master=root.main_container)
+    def __init__(self, root, frame):
+        super().__init__(master=frame)
         self.parent= root
         self.bg_color = "black"
         self.fg_color = "white"
@@ -33,8 +33,8 @@ class InputTerminal(CTkEntry):
         self.text_color = "green"
         self.text_font = ("", 12)
 
-        self.extract_button = customtkinter.CTkButton(root.main_container, fg_color="transparent", border_width=1, text_color=("gray10", "#DCE4EE"), text="Extract", command=self.on_enter)
-        self.extract_button.pack(side="right", padx=5, pady=5)
+        self.extract_button = customtkinter.CTkButton(frame, fg_color="transparent", border_width=1, text_color=("gray10", "#DCE4EE"), text="Extract", command=self.on_enter)
+        self.extract_button.pack(side="right", padx=5, pady=5, anchor="s")
 
 
     def on_escape(self, event):
