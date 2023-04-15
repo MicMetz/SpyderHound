@@ -8,7 +8,15 @@
 
 <hr>
 
-Start the app with `python run.py` or as a module: `python -m app`.
+1. Start the app with `python App.py` .
+   <br>
+2. Place the target url in the input terminal, and press enter to start scraping a domain.
+   <br>
+3. The output terminal will display the progress of the scrape.
+    1. Links
+    2. Tokens (Words)
+    3. Paragraphs
+    4. Images
 
 ### Setup
 
