@@ -5,7 +5,7 @@ import re
 
 
 
-class Domain():
+class Spyder():
     url: str = None
     dom: str = None
     raw_text_words: str = None

@@ -26,28 +26,7 @@ Start the app with `python run.py` or as a module: `python -m app`.
     * Install [customtkinter](https://github.com/TomSchimansky/CustomTkinter)
     * If you are using [conda](https://docs.conda.io/en/latest/) `conda install -c conda-forge tk`
 
-## Development
-
-- [ ] Layout
-    - [X] Splash Screen
-    - [X] Main Window
-    - [X] Side Panel
-    - [X] Input Terminal
-    - [X] Output Terminal
-    - [ ] Frames
-        - [X] Main Frame
-        - [ ] Data Frame
-        - [ ] Database Frame
-- [ ] Core
-- [ ] Web Scraping
-    - [X] Scraping
-    - [ ] Correctly Stripping tokens
-    - [ ] Parsing
-    - [ ] Storing
-
-<hr>
-
-### Project Structure
+## Project Structure
 
 The project is structured as follows:
 
@@ -58,8 +37,12 @@ The project is structured as follows:
 │   ├── Target.py
 │   ├── Domain.py
 │   ├── Database.py
-│   ├── resources (Resources)
-│   │   ├── HateSpeech.py
+├── resources (Resources)
+│   ├── hate_speech (Hate Speech Data)
+│   ├── neg_words (Negative Words)
+│   ├── pos_words (Positive Words)
+│   ├── stop_words (Stop Words)
+│   ├── toxicity (Toxicity Data)
 │   ├── ui (User Interface Tkinter Design)
 │   │   ├── OutputTerminal.py
 │   │   ├── InputTerminal.py
@@ -75,9 +58,54 @@ The project is structured as follows:
 ├── documentation (Documentation)
 │   ├── images (Images)
 ├── tools (Not Yet Implemented)
+│   
 ├── App.py (Main Application Entry Point)
+├── setup.py (Directory Linking)
 
 ```
+
+## Development
+
+- [ ] Layout
+    - [X] Splash Screen
+    - [X] Main Window
+    - [X] Side Panel
+    - [X] Input Terminal
+    - [X] Output Terminal
+    - [ ] Frames
+        - [X] Splash Frame
+        - [X] Main Frame
+        - [ ] Data Frame
+        - [ ] Database Frame
+- [ ] Core
+    - [ ] Web Scraping
+        - [X] Scraping
+            - [X] Improved Scraping with error handling
+            - [X] Correctly Stripping tokens
+        - [ ] Parsing
+        - [ ] Storing
+    - [ ] Database
+        - [ ] Database Connection
+        - [ ] Database Creation
+        - [ ] Database Insertion
+        - [ ] Database Querying
+    - [ ] Data Analysis
+        - [ ] Data Analysis
+        - [ ] Data Visualisation
+    - [ ] Data Visualisation
+        - [ ] Data Visualisation
+
+<hr>
+
+### Updates and Progress
+
+#### Better error handling for scraping
+
+Improved token stripping
+
+![Scraping](public/images/ImprovedScraper.PNG "Improved Scraping")
+
+<hr>
 
 ### GUI
 

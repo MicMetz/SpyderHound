@@ -1,7 +1,7 @@
 import datetime
 import tkinter as tk
 
-from core.Domain import Domain
+from core.Spyder import Spyder
 from urllib.parse import urlparse
 
 from core.ui.AbstractConsole import AbstractConsole
@@ -16,7 +16,7 @@ class LogController:
 class Controller():
     master: tk.Tk = None
     url: str = None
-    domain: Domain = None
+    spyder: Spyder = None
     console: AbstractConsole = None
 
 
@@ -31,11 +31,11 @@ class Controller():
 
 
     def set_domain_url(self):
-        self.domain = Domain(self.url)
+        self.spyder = Spyder(self.url)
 
 
     def save_headings(self, directory: str):
-        headings = self.domain.headings
+        headings = self.spyder.headings
         filepath = f"{directory}/{urlparse(self.url).netloc}_Headings_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')}.csv"
 
         file = open(filepath, "a+", encoding="utf-8")
@@ -53,7 +53,7 @@ class Controller():
     def save_emails(self, directory: str):
         self.console.write(f"\n\n Saving Emails found to {directory}/{urlparse(self.url).netloc}_Emails \n")
         filepath = f"{directory}/{urlparse(self.url).netloc}_Emails_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')}.csv"
-        emails = self.domain.emails
+        emails = self.spyder.emails
 
         file = open(filepath, "a+", encoding="utf-8")
         file.write("Email List:\n")
@@ -70,7 +70,7 @@ class Controller():
     def save_links(self, directory: str):
         self.console.write(f"\n\n Saving links found to f{directory}/{urlparse(self.url).netloc}_Links \n")
         filepath = f"{directory}/{urlparse(self.url).netloc}_Links_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')}.csv"
-        links = self.domain.links
+        links = self.spyder.links
 
         file = open(filepath, "a+", encoding="utf-8")
         file.write("Hyperlink List:\n")
@@ -87,7 +87,7 @@ class Controller():
     def save_images(self, directory: str):
         self.console.write(f"\n\n Saving Images found to f{directory}/{urlparse(self.url).netloc}_Images \n")
         filepath = f"{directory}/{urlparse(self.url).netloc}_Images_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')}.csv"
-        images = self.domain.images
+        images = self.spyder.images
 
         file = open(filepath, "a+", encoding="utf-8")
         file.write("Image List:\n")
@@ -103,7 +103,7 @@ class Controller():
     def save_paragraphs(self, directory: str):
         self.console.write(f"\n\n Saving Paragraphs found to f{directory}/{urlparse(self.url).netloc}_Paragraphs \n")
         filepath = f"{directory}/{urlparse(self.url).netloc}_Paragraphs_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')}.csv"
-        paragraphs = self.domain.paragraphs
+        paragraphs = self.spyder.paragraphs
 
         file = open(filepath, "a+", encoding="utf-8")
         file.write("Paragraph List:\n")
@@ -119,7 +119,7 @@ class Controller():
     def save_paragraphs_by_heading(self, directory: str):
         self.console.write(f"\n\n Saving Paragraphs found, organized by headings, to f{directory}/{urlparse(self.url).netloc}_Paragraphs_By_Headings \n")
         filepath = f"{directory}/{urlparse(self.url).netloc}_Paragraphs_By_Headings_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')}.csv"
-        paragraphs_by_headings = self.domain.paragraphs_by_headings
+        paragraphs_by_headings = self.spyder.paragraphs_by_headings
 
         file = open(filepath, "a+", encoding="utf-8")
         file.write("Paragraph List:\n")
@@ -135,7 +135,7 @@ class Controller():
     def save_raw_text(self, directory: str):
         self.console.write(f"\n\n Saving Raw Text found to f{directory}/{urlparse(self.url).netloc}_Raw_Text \n")
         filepath = f"{directory}/{urlparse(self.url).netloc}_Raw_Text_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')}.csv"
-        raw_text_words = self.domain.raw_text_words
+        raw_text_words = self.spyder.raw_text_words
 
         file = open(filepath, "a+", encoding="utf-8")
         file.write("Raw Text:\n")
@@ -155,20 +155,20 @@ class Controller():
 
 
     def get_raw_text(self):
-        return self.domain.raw_text_words
+        return self.spyder.raw_text_words
 
 
     def get_email_list(self) -> set:
-        return self.domain.emails
+        return self.spyder.emails
 
 
     def get_links(self):
-        return self.domain.links
+        return self.spyder.links
 
 
     def get_images(self):
-        return self.domain.images
+        return self.spyder.images
 
 
     def get_domain_data(self):
-        return self.domain.get_data()
+        return self.spyder.get_data()
