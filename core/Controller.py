@@ -4,7 +4,8 @@ import tkinter as tk
 from core.Domain import Domain
 from urllib.parse import urlparse
 
-from core.ui.OutputTerminal import OutputTerminal
+from core.ui.AbstractConsole import AbstractConsole
+from core.ui.DefaultConsole import DefaultConsole
 
 
 
@@ -16,16 +17,16 @@ class Controller():
     master: tk.Tk = None
     url: str = None
     domain: Domain = None
-    console: OutputTerminal = None
+    console: AbstractConsole = None
 
 
     # logController: LogController = None
     def __init__(self, root, frame):
         self.parent = root
-        self.console = OutputTerminal(self, frame)
+        self.console = DefaultConsole(self.parent, frame)
 
 
-    def switch_console(self, console: OutputTerminal):
+    def switch_console(self, console: AbstractConsole):
         self.console = console
 
 
@@ -35,105 +36,126 @@ class Controller():
 
     def save_headings(self, directory: str):
         headings = self.domain.headings
-        filepath = f"{directory}/{urlparse(self.url).netloc}_Headings_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')}.txt"
-        f = open(filepath, "a+")
-        f.write("Heading List:\n")
-        for heading in headings:
-            f.write("\t" + heading + "\n")
-        f.close()
+        filepath = f"{directory}/{urlparse(self.url).netloc}_Headings_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')}.csv"
+
+        file = open(filepath, "a+", encoding="utf-8")
+        file.write("Headings List:\n")
+        for index, heading in enumerate(headings):
+            file.write(f"\t{index + 1}: {heading}\n")
+            self.console.write(f"{index + 1}: {heading}\n")
+        else:
+            self.console.write(f"No Headings found.\n")
+
+        file.close()
+
 
 
     def save_emails(self, directory: str):
-        self.console.insert(tk.END, f"Saving Emails found to {directory}/{urlparse(self.url).netloc}_Emails \n")
+        self.console.write(f"\n\n Saving Emails found to {directory}/{urlparse(self.url).netloc}_Emails \n")
+        filepath = f"{directory}/{urlparse(self.url).netloc}_Emails_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')}.csv"
         emails = self.domain.emails
 
-        if len(emails) > 0:
-            self.console.insert(tk.END, f"Emails found!\n")
-            filepath = f"{directory}/{urlparse(self.url).netloc}_Emails_{datetime.datetime.now().strftime('%Y-%m-%d_%H')}.txt"
-            file = open(filepath, "a+")
-            file.write("Email List:\n")
-            for email in emails:
-                file.write("\t" + email + "\n")
-                self.console.insert(tk.END, f"{email}\n")
-            file.close()
+        file = open(filepath, "a+", encoding="utf-8")
+        file.write("Email List:\n")
+        for index, email in enumerate(emails):
+            file.write(f"\t{index + 1}: {email}\n")
+            self.console.write(f"{index + 1}: {email}\n")
         else:
-            self.console.insert(tk.END, f"No Email found.\n")
+            self.console.write("No Emails found.\n")
+
+        file.close()
+
 
 
     def save_links(self, directory: str):
-        self.console.insert(tk.END, f"Saving links found to f{directory}/{urlparse(self.url).netloc}_Links \n")
+        self.console.write(f"\n\n Saving links found to f{directory}/{urlparse(self.url).netloc}_Links \n")
+        filepath = f"{directory}/{urlparse(self.url).netloc}_Links_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')}.csv"
         links = self.domain.links
 
-        if len(links) > 0:
-            self.console.insert(tk.END, f"Links found!\n")
-            filepath = f"{directory}/{urlparse(self.url).netloc}_Links_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')}.txt"
-            file = open(filepath, "a+")
-            file.write("Link List:\n")
-            for link in links:
-                file.write("\t" + link + "\n")
-                self.console.insert(tk.END, f"{link}\n")
-            file.close()
+        file = open(filepath, "a+", encoding="utf-8")
+        file.write("Hyperlink List:\n")
+        for index, link in enumerate(links):
+            file.write(f"\t{index + 1}: {link}\n")
+            self.console.write(f"{index + 1}: {link}\n")
         else:
-            self.console.insert(tk.END, f"No Links found.\n")
+            self.console.write("No Links found.\n")
+
+        file.close()
+
 
 
     def save_images(self, directory: str):
-        self.console.insert(tk.END, f"Saving Images found to f{directory}/{urlparse(self.url).netloc}_Images \n")
+        self.console.write(f"\n\n Saving Images found to f{directory}/{urlparse(self.url).netloc}_Images \n")
+        filepath = f"{directory}/{urlparse(self.url).netloc}_Images_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')}.csv"
         images = self.domain.images
 
-        if len(images) > 0:
-            self.console.insert(tk.END, f"Images found!\n")
-            filepath = f"{directory}/{urlparse(self.url).netloc}_Images_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')}.txt"
-            file = open(filepath, "a+")
-            file.write("Link List:\n")
-            for image in images:
-                file.write("\t" + image + "\n")
-                self.console.insert(tk.END, f"{image}\n")
-            file.close()
+        file = open(filepath, "a+", encoding="utf-8")
+        file.write("Image List:\n")
+        for index, image in enumerate(images):
+            file.write(f"\t{index + 1}: {image}\n")
+            self.console.write(f"{index + 1}: {image}\n")
         else:
-            self.console.insert(tk.END, f"No Images found.\n")
+            self.console.write("No Images found.\n")
+
+        file.close()
 
 
     def save_paragraphs(self, directory: str):
-        self.console.insert(tk.END, f"Saving Paragraphs found to f{directory}/{urlparse(self.url).netloc}_Paragraphs \n")
+        self.console.write(f"\n\n Saving Paragraphs found to f{directory}/{urlparse(self.url).netloc}_Paragraphs \n")
+        filepath = f"{directory}/{urlparse(self.url).netloc}_Paragraphs_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')}.csv"
         paragraphs = self.domain.paragraphs
 
-        if len(paragraphs) > 0:
-            self.console.insert(tk.END, f"Paragraphs found!\n")
-            filepath = f"{directory}/{urlparse(self.url).netloc}_Paragraphs_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')}.txt"
-            file = open(filepath, "a+")
-            file.write("Paragraph List:\n")
-            for paragraph in paragraphs:
-                file.write("\t" + paragraph + "\n")
-                self.console.insert(tk.END, f"{paragraph}\n")
-            file.close()
+        file = open(filepath, "a+", encoding="utf-8")
+        file.write("Paragraph List:\n")
+        for index, paragraph in enumerate(paragraphs):
+            file.write(f"\t{index + 1}: {paragraph}\n")
+            self.console.write(f"{index + 1}: {paragraph}\n")
         else:
-            self.console.insert(tk.END, f"No Paragraphs found.\n")
+            self.console.write("No Paragraphs found.\n")
+
+        file.close()
 
 
     def save_paragraphs_by_heading(self, directory: str):
-        self.console.insert(tk.END, f"Saving Paragraphs found to f{directory}/{urlparse(self.url).netloc}_Paragraphs \n")
+        self.console.write(f"\n\n Saving Paragraphs found, organized by headings, to f{directory}/{urlparse(self.url).netloc}_Paragraphs_By_Headings \n")
+        filepath = f"{directory}/{urlparse(self.url).netloc}_Paragraphs_By_Headings_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')}.csv"
         paragraphs_by_headings = self.domain.paragraphs_by_headings
 
-        if len(paragraphs_by_headings) > 0:
-            self.console.insert(tk.END, f"Paragraphs found!\n")
-            filepath = f"{directory}/{urlparse(self.url).netloc}_Paragraphs_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')}.txt"
-            file = open(filepath, "a+")
-            file.write("Paragraph List:\n")
-            for heading, paragraphs in paragraphs_by_headings.items():
-                file.write("\t" + heading + "\n")
-                self.console.insert(tk.END, f"{heading}\n")
-                for paragraph in paragraphs:
-                    file.write("\t\t" + paragraph + "\n")
-                    self.console.insert(tk.END, f"\t{paragraph}\n")
-            file.close()
+        file = open(filepath, "a+", encoding="utf-8")
+        file.write("Paragraph List:\n")
+        for index, paragraph in enumerate(paragraphs_by_headings):
+            file.write(f"\t{index + 1}: {paragraph}\n")
+            self.console.write(f"{index + 1}: {paragraph}\n")
         else:
-            self.console.insert(tk.END, f"No Paragraphs found.\n")
+            self.console.write("No Paragraphs found.\n")
+
+        file.close()
 
 
-    def get_text(self):
-        (whole_text, headings, paragraphs) = (self.domain.paragraphs, self.domain.headings, self.domain.paragraphs_by_headings)
-        return (whole_text, headings, paragraphs)
+    def save_raw_text(self, directory: str):
+        self.console.write(f"\n\n Saving Raw Text found to f{directory}/{urlparse(self.url).netloc}_Raw_Text \n")
+        filepath = f"{directory}/{urlparse(self.url).netloc}_Raw_Text_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')}.csv"
+        raw_text_words = self.domain.raw_text_words
+
+        file = open(filepath, "a+", encoding="utf-8")
+        file.write("Raw Text:\n")
+        for index, word in enumerate(raw_text_words):
+            if word != "" and (word != "\n" or word != "\r" or word != "\t") and word != UnicodeEncodeError and word != UnicodeDecodeError:
+                file.write(f"\t{index + 1}: {word}\n")
+                self.console.write(f"{index + 1}: {word}\n")
+        else:
+            self.console.write("No Raw Text found.\n")
+
+        file.close()
+
+
+    def save_domain_data(self, directory: str):
+        self.console.write("\n\n Saving Domain Data to file \n")
+        pass
+
+
+    def get_raw_text(self):
+        return self.domain.raw_text_words
 
 
     def get_email_list(self) -> set:

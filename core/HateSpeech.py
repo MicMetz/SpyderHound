@@ -1,5 +1,6 @@
-#!/usr/bin/env python3
+import asyncio
 
+import html_text
 import scrapy
 from html_text import extract_text
 import pandas as pd
@@ -11,7 +12,7 @@ class HateSpeechSpider(scrapy.Spider):
 
 
     def start_requests(self):
-        yield scrapy.Request(url="https://hatespeechdata.com/")
+        yield scrapy.Request(url="weaponizedword.org")
 
 
     def parse(self, response):
@@ -35,10 +36,11 @@ class HateSpeechSpider(scrapy.Spider):
                 data.append(row)
 
         df = pd.DataFrame(data)
-        df.to_csv("resources/hatespeech.csv", index=False)
+        df.to_csv("hatespeech.csv", index=False)
 
 
 
 if __name__ == "__main__":
-    HateSpeechSpider().start_requests()
-    HateSpeechSpider().parse()
+    spider = HateSpeechSpider()
+    asyncio.run(spider.start_requests())
+

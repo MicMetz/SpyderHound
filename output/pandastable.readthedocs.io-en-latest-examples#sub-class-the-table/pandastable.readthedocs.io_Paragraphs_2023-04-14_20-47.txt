@@ -1,0 +1,27 @@
+Paragraph List:
+	Note: You should generally use a simple integer index for the table when using colors as there may be inconsistencies otherwise.
+	Plugins are for adding custom functionality that is not present in the main application. They are implemented by sub-classing the Plugin class in the plugin module. This is a python script that can generally contain any code you wish. Usually the idea will be to implement a dialog that the user interacts with. But this could also be a single method that runs on the current table or all sheets at once.
+	Import a csv file:
+	<code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">pandastable.plugin</span> <span class="pre">import</span> <span class="pre">Plugin</span></code>
+	Examples of simple dataframe operations. Remember when you update the dataframe you will need to call table.redraw() to see the changes reflected:
+	Override the right click popup menu:
+	You can set the following configuration values:
+	You can probably use Anaconda to do the same thing but we have not tested this.
+	Each table has an object called model with has the dataframe inside it. The dataframe is referred to as df. So to access the data on a table you can use:
+	Plugins should inherit from the Plugin class. Though this is not strictly necessary for the plugin to function.
+	Update the table:
+	This section is for python programmers you want to use the table widget in their own programs.
+	You can use the Table class methods to directly access data and perform many more functions. Check the API for all the methods. Some examples are given here:
+	You can also override the quit() and about() methods.
+	You can set column colors by setting the key in the columncolors dict to a valid hex color code. Then just redraw:
+	You can set row and cell colors in several ways. <code class="docutils literal notranslate"><span class="pre">table.rowcolors</span></code> is a pandas dataframe that mirrors the current table and stores a color for each cell. It only adds columns as needed. You can update this manually but it is easiest to use the following methods:
+	To color by column values:
+	A class for launching a basic table in a frame:
+	You can simply copy the example plugin to get started.  All plugins need to have a <cite>main()</cite> method which is called by the application to launch them. By default this method contains the <cite>_doFrame()</cite> method which constructs a main frame as part of the current table frame. Usually you override main() and call _doFrame then add your own custom code with your widgets.
+	To clear formatting:
+	Preferences are normally loaded from a configuration file that can be edited manually or via the menu. You can also programmatically set these preferences using the config module:
+	_doFrame method has the following lines which are always needed unless it is a non GUI plugin:
+	see <a class="reference external" href="https://github.com/dmnfarrell/pandastable/blob/master/pandastable/plugins/rename.py">https://github.com/dmnfarrell/pandastable/blob/master/pandastable/plugins/rename.py</a>
+	The tables use a pandas DataFrame object for storing the underlying data. If you are not familiar with pandas you should learn the basics if you need to access or manipulate the table data. See <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/10min.html">http://pandas.pydata.org/pandas-docs/stable/10min.html</a>
+	You can set table attributes directly such as these examples:
+	Create a parent frame and then add the table to it:

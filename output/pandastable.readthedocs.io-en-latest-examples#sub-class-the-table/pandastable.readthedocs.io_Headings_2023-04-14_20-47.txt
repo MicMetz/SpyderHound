@@ -1,0 +1,13 @@
+Heading List:
+	Table methods<a class="headerlink" href="#table-methods" title="Permalink to this headline">¶</a>
+	Implementing a plugin<a class="headerlink" href="#implementing-a-plugin" title="Permalink to this headline">¶</a>
+	Writing DataExplore Plugins<a class="headerlink" href="#writing-dataexplore-plugins" title="Permalink to this headline">¶</a>
+	Set table attributes<a class="headerlink" href="#set-table-attributes" title="Permalink to this headline">¶</a>
+	Set Preferences<a class="headerlink" href="#set-preferences" title="Permalink to this headline">¶</a>
+	Basics<a class="headerlink" href="#basics" title="Permalink to this headline">¶</a>
+	Non-table based plugins<a class="headerlink" href="#non-table-based-plugins" title="Permalink to this headline">¶</a>
+	Table Coloring<a class="headerlink" href="#table-coloring" title="Permalink to this headline">¶</a>
+	Sub-class the Table<a class="headerlink" href="#sub-class-the-table" title="Permalink to this headline">¶</a>
+	Code Examples<a class="headerlink" href="#code-examples" title="Permalink to this headline">¶</a>
+	Freezing the app<a class="headerlink" href="#freezing-the-app" title="Permalink to this headline">¶</a>
+	Accessing and modifying data directly<a class="headerlink" href="#accessing-and-modifying-data-directly" title="Permalink to this headline">¶</a>

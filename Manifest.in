@@ -1,0 +1,3 @@
+include assets/*.png
+include assets/*.jpg
+include resources/*.csv

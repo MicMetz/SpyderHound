@@ -22,5 +22,3 @@ class MainPage(ck.CTkFrame):
         self.parent.side_panel = SidePanel(self.parent, self)
         self.parent.controller = Controller(self.parent, self)
         self.parent.input_panel = InputTerminal(self.parent, self)
-
-

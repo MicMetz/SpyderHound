@@ -3,8 +3,8 @@ import sys
 import tkinter as tk
 import customtkinter as ck
 
-from MainPage import MainPage
-from SplashPage import SplashPage
+from core.pages.MainPage import MainPage
+from core.pages.SplashPage import SplashPage
 from core.HateSpeech import HateSpeechSpider
 from core.ui.InputTerminal import InputTerminal
 from core.Controller import Controller
@@ -73,45 +73,44 @@ class Application(ck.CTk):
 
 
     def on_extract(self, event):
-        self.controller.console.insert(tk.END, "Scraping data...\n")
+        self.controller.console.write("Scraping data...\n")
         self.controller.url = event
         self.controller.set_domain_url()
 
         self.targets.append(Target(self.controller.get_domain_data(), self.controller.url))
 
         if not os.path.exists(self.data_dir):
-            self.controller.console.insert(tk.END, f"Creating directory {self.data_dir}\n")
+            self.controller.console.write(f"Creating directory {self.data_dir}\n")
             os.mkdir(self.data_dir)
 
         # Remove http(s):// www. and any trailing slashes or .html from the url and replace with nothing
         tag = (self.controller.url.replace(".html", "").replace(".htm", "").replace(".php", "").replace("https://", "").replace("http://", "")).replace("/", "-")
         domain_dir = f"{self.data_dir}/{tag}"
         if not os.path.exists(domain_dir):
-            self.controller.console.insert(tk.END, f"Creating directory {domain_dir}\n")
+            self.controller.console.write(f"Creating directory {domain_dir}\n")
             os.mkdir(domain_dir)
 
-        self.controller.console.insert(tk.END, "Scrap success! \n")
+        self.controller.console.write("\n Scrap success! \n")
 
-        emails = self.controller.get_email_list()
-        links = self.controller.get_links()
-        images = self.controller.get_images()
+        self.controller.console.write("\n\n Saving raw text in domain \n")
+        self.controller.save_raw_text(domain_dir)
 
-        self.controller.console.insert(tk.END, "\n Saving email addresses found in domain \n")
+        self.controller.console.write("\n\n Saving email addresses found in domain \n")
         self.controller.save_emails(domain_dir)
 
-        self.controller.console.insert(tk.END, "\n Saving heading list in {self.controller.url}.txt\n")
+        self.controller.console.write("\n\n Saving heading list in {self.controller.url}.txt\n")
         self.controller.save_headings(domain_dir)
 
-        self.controller.console.insert(tk.END, "\n Saving links found in domain \n")
+        self.controller.console.write("\n\n Saving links found in domain \n")
         self.controller.save_links(domain_dir)
 
-        self.controller.console.insert(tk.END, "\n Saving images found in domain \n")
+        self.controller.console.write("\n\n Saving images found in domain \n")
         self.controller.save_images(domain_dir)
 
-        self.controller.console.insert(tk.END, "\n Saving text found in domain \n")
+        self.controller.console.write("\n\n Saving text found in domain \n")
         self.controller.save_paragraphs(domain_dir)
 
-        self.controller.console.insert(tk.END, "\n Saving text found in domain by heading \n")
+        self.controller.console.write("\n\n Saving text found in domain by heading \n")
         self.controller.save_paragraphs_by_heading(domain_dir)
 
 
@@ -146,24 +145,24 @@ class Application(ck.CTk):
 
 
     def execute(self, searchphrase, target, crawler):
-        self.controller.console.insert(tk.END, "Scraping data...\n")
+        self.controller.console.write("Scraping data...\n")
         self.controller.url = self.entry_panel.get()
         self.controller.set_domain_url()
-        self.controller.console.insert(tk.END, "Scrap success!\n")
-        self.controller.console.insert(tk.END, f"Saving email list in {self.controller.url}.txt\n")
+        self.controller.console.write("Scrap success!\n")
+        self.controller.console.write(f"Saving email list in {self.controller.url}.txt\n")
         emails = self.controller.get_email_list()
         links = self.controller.get_links()
         images = self.controller.get_images()
 
         if len(emails) > 0:
-            self.controller.console.insert(tk.END, f"Emails found!\n")
+            self.controller.console.write(f"Emails found!\n")
             for email in emails:
-                self.controller.console.insert(tk.END, f"Email found: {email}\n")
+                self.controller.console.write(f"Email found: {email}\n")
             self.controller.save_emails()
         else:
-            self.controller.console.insert(tk.END, f"No Email found.\n")
+            self.controller.console.write(f"No Email found.\n")
 
-        self.controller.console.insert(tk.END, f"Saving heading list in {self.controller.url}.txt\n")
+        self.controller.console.write(f"Saving heading list in {self.controller.url}.txt\n")
         self.controller.save_headings()
 
 
@@ -228,5 +227,4 @@ class Application(ck.CTk):
 
 if __name__ == "__main__":
     view = Application()
-    icon = tk.PhotoImage(file="core/assets/hater.png")
     view.mainloop()

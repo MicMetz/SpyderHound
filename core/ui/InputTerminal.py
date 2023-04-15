@@ -1,5 +1,5 @@
 import customtkinter
-from customtkinter import CTkEntry, CTkFrame
+from customtkinter import CTkEntry
 import tkinter as tk
 
 
@@ -7,7 +7,7 @@ import tkinter as tk
 class InputTerminal(CTkEntry):
     def __init__(self, parent, frame):
         super().__init__(master=frame)
-        self.parent= parent
+        self.parent = parent
         self.bg_color = "black"
         self.fg_color = "white"
         self.font = ("Consolas", 12)
@@ -26,7 +26,6 @@ class InputTerminal(CTkEntry):
         self.history_index = 0
         self.history_max = 100
         self.history.append("")
-        self.history_index = 1
 
         self.placeholder_text = "Enter command"
         self.placeholder_color = "green"
@@ -35,6 +34,8 @@ class InputTerminal(CTkEntry):
 
         self.extract_button = customtkinter.CTkButton(frame, fg_color="transparent", border_width=1, text_color=("gray10", "#DCE4EE"), text="Extract", command=self.on_enter)
         self.extract_button.pack(side="right", padx=5, pady=5, anchor="s")
+
+
 
 
     def on_escape(self, event):
@@ -64,19 +65,20 @@ class InputTerminal(CTkEntry):
     def on_enter(self):
         if self.get() == "":
             return
-        self.history[self.history_index] = self.get()
-        self.history_index += 1
-        if self.history_index >= len(self.history):
-            self.history.append("")
-        self.delete(0, tk.END)
-        self.history[self.history_index] = ""
-        self.parent.on_extract(self.history[self.history_index - 1])
 
-        # self.parent.on_extract(self.get())
-        # self.history[self.history_index] = self.get()
-        # self.history_index += 1
-        # if self.history_index >= len(self.history):
-        #     self.history.append("")
-        # self.delete(0, tk.END)
-        # self.history[self.history_index] = ""
-        # self.parent.on_extract(self.history[self.history_index - 1])
+        if self.get() == self.history[self.history_index - 1]:
+            self.parent.on_extract(self.history[self.history_index - 1])
+            self.delete(0, tk.END)
+            return
+
+        self.history[self.history_index] = self.get()
+
+        self.history_index += 1
+        self.history.append("")
+        self.parent.on_extract(self.history[self.history_index - 1])
+        self.delete(0, tk.END)
+
+        if self.history_index == 100:
+            # removed oldest 50 entries and push down the rest
+            self.history = self.history[50:]
+            self.history_index = 50

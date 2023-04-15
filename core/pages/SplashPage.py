@@ -1,6 +1,7 @@
 import tkinter as tk
-
 import customtkinter as ck
+
+import setuptools
 
 
 
@@ -15,7 +16,8 @@ class SplashPage(ck.CTkFrame):
         splashTitle.config(font=("MS Sans Serif", 50))
         splashTitle.grid(row=0, column=0, sticky="nsew")
 
-        splashIcon = tk.PhotoImage(file="core/assets/hater.png")
+        splashIcon = tk.PhotoImage(setuptools.find_packages("../../assets/hater.png"))
+        # splashIcon = tk.PhotoImage(file="../../assets/hater.png")
         splashIconLabel = tk.Label(self, image=splashIcon, bg="black")
         splashIconLabel.image = splashIcon
         splashIconLabel.grid(row=0, column=1, sticky="nsew")
@@ -24,4 +26,4 @@ class SplashPage(ck.CTkFrame):
         splashSubTitle.config(font=("MS Sans Serif", 25))
         splashSubTitle.grid(row=1, column=0, sticky="nsew")
 
-        self.after((delay := 4000), lambda: self.parent.switch_panel("MainPage"))
+        self.after((delay := 2000), lambda: self.parent.switch_panel("MainPage"))

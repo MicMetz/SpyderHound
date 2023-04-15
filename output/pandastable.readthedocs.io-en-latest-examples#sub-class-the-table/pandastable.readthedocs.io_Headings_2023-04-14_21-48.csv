@@ -1,0 +1,13 @@
+Headings List:
+	1: <h1>Code Examples<a class="headerlink" href="#code-examples" title="Permalink to this headline">Â¶</a></h1>
+	2: <h2>Basics<a class="headerlink" href="#basics" title="Permalink to this headline">Â¶</a></h2>
+	3: <h2>Sub-class the Table<a class="headerlink" href="#sub-class-the-table" title="Permalink to this headline">Â¶</a></h2>
+	4: <h2>Table methods<a class="headerlink" href="#table-methods" title="Permalink to this headline">Â¶</a></h2>
+	5: <h2>Accessing and modifying data directly<a class="headerlink" href="#accessing-and-modifying-data-directly" title="Permalink to this headline">Â¶</a></h2>
+	6: <h2>Set table attributes<a class="headerlink" href="#set-table-attributes" title="Permalink to this headline">Â¶</a></h2>
+	7: <h2>Set Preferences<a class="headerlink" href="#set-preferences" title="Permalink to this headline">Â¶</a></h2>
+	8: <h2>Table Coloring<a class="headerlink" href="#table-coloring" title="Permalink to this headline">Â¶</a></h2>
+	9: <h2>Writing DataExplore Plugins<a class="headerlink" href="#writing-dataexplore-plugins" title="Permalink to this headline">Â¶</a></h2>
+	10: <h3>Implementing a plugin<a class="headerlink" href="#implementing-a-plugin" title="Permalink to this headline">Â¶</a></h3>
+	11: <h3>Non-table based plugins<a class="headerlink" href="#non-table-based-plugins" title="Permalink to this headline">Â¶</a></h3>
+	12: <h2>Freezing the app<a class="headerlink" href="#freezing-the-app" title="Permalink to this headline">Â¶</a></h2>
