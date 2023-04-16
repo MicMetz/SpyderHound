@@ -12,7 +12,7 @@ class SplashPage(ck.CTkFrame):
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
-        splashTitle = tk.Label(self, text="SpyderHound", bg="black", fg="red")
+        splashTitle = tk.Label(self, text="SpyderHound", bg="gray", fg="black")
         splashTitle.config(font=("MS Sans Serif", 50))
         splashTitle.grid(row=0, column=0, sticky="nsew")
 
@@ -26,4 +26,4 @@ class SplashPage(ck.CTkFrame):
         splashSubTitle.config(font=("MS Sans Serif", 25))
         splashSubTitle.grid(row=1, column=0, sticky="nsew")
 
-        self.after((delay := 2000), lambda: self.parent.switch_panel("MainPage"))
+        self.after((delay := 1000), lambda: self.parent.switch_panel("MainPage"))

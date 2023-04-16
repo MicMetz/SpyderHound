@@ -9,7 +9,7 @@ setup(
     version='0.0.1',
     description='A web crawler for hating yourself',
 
-    packages=[],
+    packages=find_packages( exclude=['tests', 'tests.*'] ),
     package_data={'': ['*.json', '*.png', '*.gif', '*.ico', '*.txt', '*.csv']},
 
     reqs=open('./requirements.txt', 'r').read().split('\n'),

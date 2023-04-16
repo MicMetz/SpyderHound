@@ -10,6 +10,7 @@ from core.ui.InputTerminal import InputTerminal
 from core.Controller import Controller
 from core.ui.SidePanel import SidePanel
 from core.Target import Target
+from core.model.AnnaFrame import AnnaFrame
 
 
 
@@ -41,21 +42,20 @@ class Application(ck.CTk):
     data_frame = None
     splash_frame = None
     frames = {}
-    # frames = {"mainpage": CTkFrame, "splash": CTkFrame}
 
-    entry_panel: tk.Entry = None
     controller: Controller = None
     input_panel: InputTerminal = None
     side_panel: SidePanel = None
-    targets: [Target()] = None
+    targets: [Target()] = []
+    dataframes: [AnnaFrame()] = []
 
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.entry_panel = None
         self.input_panel = None
         self.controller = None
-        self.targets = None
+        self.targets = [Target()]
+        self.dataframes = [AnnaFrame()]
 
         self.title(self.title_str)
         self.protocol("WM_DELETE_WINDOW", self.quit)
@@ -68,13 +68,12 @@ class Application(ck.CTk):
         self.frame.grid_rowconfigure(0, weight=1)
 
         # self.pack()
-        # self.splashPage()
         self.__loadFrames()
 
 
-    def on_extract(self, event):
+    def extract(self, target):
         self.controller.console.write("Scraping data...\n")
-        self.controller.url = event
+        self.controller.url = target
         self.controller.set_domain_url()
 
         self.targets.append(Target(self.controller.get_domain_data(), self.controller.url))
@@ -128,9 +127,9 @@ class Application(ck.CTk):
         menu_panel.add_cascade(label="Exit", command=self.__quit)
 
         # for F in (SplashPage, MainPage, AnalysisPage, DataPage,
-        for F in (SplashPage, MainPage):
-            page_name = F.__name__
-            frame = F(frame=self.frame, parent=self)
+        for Page in (SplashPage, MainPage):
+            page_name = Page.__name__
+            frame = Page(frame=self.frame, parent=self)
             self.frames[page_name] = frame
             frame.grid(row=0, column=0, sticky="nsew")
 
@@ -144,28 +143,12 @@ class Application(ck.CTk):
 
 
 
-    def execute(self, searchphrase, target, crawler):
-        self.controller.console.write("Scraping data...\n")
-        self.controller.url = self.entry_panel.get()
-        self.controller.set_domain_url()
-        self.controller.console.write("Scrap success!\n")
-        self.controller.console.write(f"Saving email list in {self.controller.url}.txt\n")
-        emails = self.controller.get_email_list()
-        links = self.controller.get_links()
-        images = self.controller.get_images()
-
-        if len(emails) > 0:
-            self.controller.console.write(f"Emails found!\n")
-            for email in emails:
-                self.controller.console.write(f"Email found: {email}\n")
-            self.controller.save_emails()
-        else:
-            self.controller.console.write(f"No Email found.\n")
-
-        self.controller.console.write(f"Saving heading list in {self.controller.url}.txt\n")
-        self.controller.save_headings()
-
-
+    def execute(self, phrase, target):
+        if phrase == "scrape":
+            self.extract(target)
+            # self.switch_panel("MainPage")
+        elif phrase == "analyze":
+            pass
 
     def switch_panel(self, panel):
         # self.frame.pack_forget()
