@@ -8,14 +8,14 @@ import re
 class Spyder():
     url: str = None
     dom: str = None
-    raw_text_words: str = None
     emails: set = None
     links: set = None
     images: set = None
     headings: set = None
     paragraphs: set = None
-    paragraphs_by_headings: dict = {}
     page: str = None
+    raw_text_words: str = None
+    paragraphs_by_headings: dict = {}
 
 
     def __init__(self, url: str):

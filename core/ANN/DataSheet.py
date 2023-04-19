@@ -1,20 +1,16 @@
 from pandas import DataFrame
+import customtkinter as ck
+import tkinter as tk
 
 
 
-class AnnaFrame:
-# class AnnaFrame(DataFrame):
-    name: str = "None"
-    description: str = "No description"
-    index: list = []
-    columns: list = []
-    data: list = []
-    dtype: None = None
-    copy: bool = False
+class DataSheet(ck.CTkFrame):
+    def __init__(self, parent, frame, name, description, index, columns, data, dtype, copy):
+        ck.CTkFrame.__init__(self, frame)
+        self.parent = parent
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(0, weight=1)
 
-
-    def __init__(self, name="None", description=None, data=None, index=None, columns=None, dtype=None, copy=False):
-        # super().__init__(data, index, columns, dtype, copy)
         self.name = name
         self.description = description
         self.index = index
@@ -22,12 +18,25 @@ class AnnaFrame:
         self.data = data
         self.dtype = dtype
         self.copy = copy
+
+        self.options = ck.CTkOptionMenu(self, self.show_options()).pack()
+        self.options.set("Options")
+
+        self.text = tk.Text(self, height=10, width=50)
+        self.text.pack()
+
         self.asynchronous = False
+
 
 
     def __str__(self):
         stringify = f"Name: {self.name}\nDescription: {self.description}\nIndex: {self.index}\nColumns: {self.columns}\nData: {self.data}\nDtype: {self.dtype}\nCopy: {self.copy}"
         return stringify
+
+
+    def show_options(self):
+        opts = self.options.get()
+
 
 
     def switch_async(self):

@@ -32,7 +32,7 @@ class SidePanel(CTkFrame):
         self.sidebar_button_three = customtkinter.CTkButton(self, text="Scrape", width=140, height=40, corner_radius=5, fg_color="red", command=lambda: self.parent.switch_panel("interface"))
         self.sidebar_button_three.grid(row=3, column=0, padx=20, pady=10)
 
-        self.sidebar_button_four = customtkinter.CTkButton(self, text="Database", width=140, height=40, corner_radius=5, fg_color="red", command=lambda: self.parent.switch_panel("database"))
+        self.sidebar_button_four = customtkinter.CTkButton(self, text="Database", width=140, height=40, corner_radius=5, fg_color="red", command=lambda: self.parent.switch_panel("Datasets"))
         self.sidebar_button_four.grid(row=4, column=0, padx=20, pady=10)
 
         self.target_mode_label = customtkinter.CTkLabel(self, text="Target Mode:", anchor="w")
@@ -41,9 +41,9 @@ class SidePanel(CTkFrame):
         self.target_mode_optionemenu.grid(row=6, column=0, padx=20, pady=(10, 20))
 
         self.annaFrame_label = customtkinter.CTkLabel(self, text="Dataframe:", anchor="w")
-        self.annaFrame_label.grid(row=7, column=0, padx=20, pady=(20, 0))
-        self.annaFrame_optionemenu = customtkinter.CTkOptionMenu(self, fg_color="red", values=[annaframe.name for annaframe in self.parent.dataframes], command=self.change_dataframe_event)
-        self.annaFrame_optionemenu.grid(row=8, column=0, padx=20, pady=(10, 20))
+        # self.annaFrame_label.grid(row=7, column=0, padx=20, pady=(20, 0))
+        # self.annaFrame_optionemenu = customtkinter.CTkOptionMenu(self, fg_color="red", values=[datasheets.name for datasheets in self.parent.dataframes], command=self.change_dataframe_event)
+        # self.annaFrame_optionemenu.grid(row=8, column=0, padx=20, pady=(10, 20))
 
         # self.annaFrame_label = customtkinter.CTkLabel(self, text="Trainer:", anchor="w")
         # self.annaFrame_label.grid(row=9, column=0, padx=20, pady=(20, 0))

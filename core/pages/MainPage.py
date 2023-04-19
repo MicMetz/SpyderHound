@@ -1,12 +1,6 @@
-import os
-import sys
-import tkinter as tk
-
 import customtkinter as ck
 
 from core.Controller import Controller
-from core.Target import Target
-from core.model.AnnaFrame import AnnaFrame
 from core.ui.InputTerminal import InputTerminal
 from core.ui.SidePanel import SidePanel
 

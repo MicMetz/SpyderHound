@@ -3,6 +3,7 @@ import sys
 import tkinter as tk
 import customtkinter as ck
 
+from core.ANN.DataSheet import DataSheet
 from core.pages.MainPage import MainPage
 from core.pages.SplashPage import SplashPage
 from core.HateSpeech import HateSpeechSpider
@@ -10,7 +11,7 @@ from core.ui.InputTerminal import InputTerminal
 from core.Controller import Controller
 from core.ui.SidePanel import SidePanel
 from core.Target import Target
-from core.model.AnnaFrame import AnnaFrame
+from core.Datasets import DataSheet
 
 
 
@@ -47,7 +48,7 @@ class Application(ck.CTk):
     input_panel: InputTerminal = None
     side_panel: SidePanel = None
     targets: [Target()] = []
-    dataframes: [AnnaFrame()] = []
+    dataframes: [None] = []
 
 
     def __init__(self, **kwargs):
@@ -55,7 +56,7 @@ class Application(ck.CTk):
         self.input_panel = None
         self.controller = None
         self.targets = [Target()]
-        self.dataframes = [AnnaFrame()]
+        self.dataframes = [None]
 
         self.title(self.title_str)
         self.protocol("WM_DELETE_WINDOW", self.quit)
@@ -149,6 +150,7 @@ class Application(ck.CTk):
             # self.switch_panel("MainPage")
         elif phrase == "analyze":
             pass
+
 
     def switch_panel(self, panel):
         # self.frame.pack_forget()

@@ -13,14 +13,13 @@ class InputTerminal(CTkEntry):
         self.font = ("Consolas", 12)
         self.text_color = "white"
         self.border_width = 0
+        self.bind("<Return>", lambda command: self.on_enter())
+        self.bind("<Escape>", lambda command: self.on_escape())
+        self.bind("<Tab>", lambda command: self.on_tab())
+        self.bind("<Up>", lambda command: self.on_up())
+        self.bind("<Down>", lambda command: self.on_down())
         self.pack(side="left", fill="x", expand=True, padx=5, pady=5, anchor="s")
 
-        self.bind("<Return>", self.on_enter)
-        self.bind("<KP_Enter>", self.on_enter)
-        self.bind("<Up>", self.on_up)
-        self.bind("<Down>", self.on_down)
-        self.bind("<Tab>", self.on_tab)
-        self.bind("<Escape>", self.on_escape)
 
         self.history = []
         self.history_index = 0
@@ -38,24 +37,24 @@ class InputTerminal(CTkEntry):
 
 
 
-    def on_escape(self, event):
+    def on_escape(self):
         self.delete(0, tk.END)
         self.history_index = 0
         self.history[self.history_index] = ""
 
 
-    def on_tab(self, event):
+    def on_tab(self):
         pass
 
 
-    def on_up(self, event):
+    def on_up(self):
         if self.history_index > 0:
             self.history_index -= 1
             self.delete(0, tk.END)
             self.insert(0, self.history[self.history_index])
 
 
-    def on_down(self, event):
+    def on_down(self):
         if self.history_index < len(self.history) - 1:
             self.history_index += 1
             self.delete(0, tk.END)
@@ -67,15 +66,15 @@ class InputTerminal(CTkEntry):
             return
 
         if self.get() == self.history[self.history_index - 1]:
-            self.parent.on_extract(self.history[self.history_index - 1])
+            self.parent.extract(self.history[self.history_index - 1])
+            self.history.append("")
             self.delete(0, tk.END)
             return
 
         self.history[self.history_index] = self.get()
-
         self.history_index += 1
         self.history.append("")
-        self.parent.on_extract(self.history[self.history_index - 1])
+        self.parent.extract(self.history[self.history_index - 1])
         self.delete(0, tk.END)
 
         if self.history_index == 100:
