@@ -29,11 +29,6 @@
 <hr>
 <br>
 
-* To interactively edit the GUI, you can use Qt designer: `designer.exe app/ui/app.ui`. All changes made to ui files have to be converted with the provided `tools/uicomp.bat` script. To obtain the
-  designer, there are multiple options:
-    * Install [customtkinter](https://github.com/TomSchimansky/CustomTkinter)
-    * If you are using [conda](https://docs.conda.io/en/latest/) `conda install -c conda-forge tk`
-
 ## Project Structure
 
 The project is structured as follows:
