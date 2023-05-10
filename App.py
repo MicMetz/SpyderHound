@@ -3,15 +3,12 @@ import sys
 import tkinter as tk
 import customtkinter as ck
 
-from core.ANN.DataSheet import DataSheet
 from core.pages.MainPage import MainPage
 from core.pages.SplashPage import SplashPage
-from core.HateSpeech import HateSpeechSpider
 from core.ui.InputTerminal import InputTerminal
 from core.Controller import Controller
 from core.ui.SidePanel import SidePanel
 from core.Target import Target
-from core.Datasets import DataSheet
 
 
 
@@ -21,10 +18,6 @@ if os.path.exists(".env"):
         if len(var) == 2:
             os.environ[var[0]] = var[1]
 
-if not os.path.exists('resources/hate_speech.csv'):
-    HateSpeechSpider().start_requests()
-
-# hate_frame = pd.read_csv('resources/hate_speech.csv')
 
 
 class Application(ck.CTk):
