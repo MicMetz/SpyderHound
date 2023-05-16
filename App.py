@@ -209,7 +209,5 @@ if __name__ == "__main__":
     view = Application()
     view.mainloop()
 
-    # demo
-
     target = "https://www.politico.eu/article/emmanuel-macron-china-america-pressure-interview/"
     searchphrase = "Macron"
